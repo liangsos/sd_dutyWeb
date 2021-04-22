@@ -1,0 +1,187 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta content="山东省水情值班系统" http-equiv="keywords">
+<meta name="description" content="山东省水文局">
+<meta name="applicable-device" content="pc,mobile">
+<meta http-equiv="Cache-Control" content="no-siteapp"/>
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+
+<title>山东省水情值班系统</title>
+
+<link rel="stylesheet" href="css/index.css" type="text/css">
+
+<script type="text/javascript" src="lib/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="lib/jquery.SuperSlide.2.1.1.js"></script>
+<script type="text/javascript" src="lib/public.js"></script><!-- 菜单js等-->
+<script src="api/baseApi.js" type="text/javascript"></script>
+<!-- <script src="js/home.js" type="text/javascript"></script> -->
+<script type="text/javascript" src="js/home.js"></script>
+<script src="lib/jquerysession.js" type="text/javascript"></script>
+<script src="api/baseApi.js" type="text/javascript"></script>
+<script src="api/loginAndLogoutApi.js" type="text/javascript"></script>
+<script type="text/javascript" src="lib/webservice.js"></script>
+<script type="text/javascript" src="lib/moment.min.js"></script>
+<script type="text/javascript" src="lib/crypto-js.min.js"></script>
+<script type="text/javascript" src="lib/fuc.js"></script>
+
+</head>
+<body id="body">
+<!--头部-->
+<div class="topbox bg">
+	<div class="wid_main fix">
+        <div class="logo l"><img src="images/login_03.png" alt="logo" /></div>
+        <div style="float: left;color: #ffffff;">
+			<h3 style="font-size: 35px;font-weight: bold;letter-spacing: 6px;margin-top: 50px;margin-left: 20px;">山东省水情值班系统</h3>
+			<p style="font-size: 14px;color: #6a8cc3;margin-left: 48px;word-spacing: 5px;">Shandong Hydrological On-duty System</p>
+        </div>
+	</div>
+</div>
+<!-- top end -->
+
+<!-- 主体内容框 -->
+<div class="contentbox wid_main bora_5">
+	<div class="content">
+
+		<!-- 导航栏部分 -->
+		<div class="top_nav bg bora_5 ovh">
+			<ul class="fix">
+				<li class="cur">
+					<a href="home.html">首 页</a>
+				</li>
+				<li id="docFix">
+					<a href="page/DocList.html?id=1">防汛文档</a>
+				</li>
+				<li id="emailFix">
+					<a href="page/DocList.html?id=2">邮件管理</a>
+				</li>
+				<li id="matFix">
+					<a href="page/DocList.html?id=3">阶段材料</a>
+				</li>
+				<li id="annoFix">
+					<a href="page/DocList.html?id=4">通知公告</a>
+				</li>
+				<li>
+					<a href="index.html">值班管理</a>
+				</li>
+			</ul>
+		</div>
+		<!-- 导航end -->
+
+		<!-- 今日值班公告 -->
+		<div class="gonggao bdb_d fix">
+			<div class="txtScroll-top l fix">
+				<div class="l tit"><img src="images/icon_gongkai.png"><b class="dib vm">今日值班：</b></div>
+				<div class="bd l">
+					<ul id="dutyToday" class="infoList">
+					</ul>
+				</div>
+			</div>
+			<script type="text/javascript">
+				jQuery(".txtScroll-top").slide({titCell:".hd ul",mainCell:".bd ul",effect:"topLoop",autoPlay:true,vis:1,interTime:4000,});
+			</script>
+
+			<!-- 时间 -->
+			<div class="timebox fc r">
+				<script type="text/javascript" src="lib/show_date.js?type=1"></script>
+			</div>
+		</div>
+
+		<!-- 文档邮件阶段材料和系统公告部分 -->
+		<div class="conbox">
+			<div class="fix">
+				<div class="slideTxtBox l fix">
+					<div class="hd l">
+						<ul>
+							<li><a href="page/DocList.html?id=1"><i><img src="images/icon_news01.png"></i><b>防汛文档</b></a></li>
+							<li><a href="page/DocList.html?id=2"><i><img src="images/icon_news02.png"></i><b>邮件管理</b></a></li>
+							<li><a href="page/DocList.html?id=3"><i><img src="images/icon_news03.png"></i><b>阶段材料</b></a></li>
+						</ul>
+					</div>
+					<div class="r box">
+						<div class="bd">
+							<ul id="dutyDocUl"></ul>
+							<ul id="emailUl"></ul>
+							<ul class="mat" id="matUl11">
+							</ul>
+						</div>
+					</div>
+					<script type="text/javascript">jQuery(".slideTxtBox").slide({effect:"leftLoop",delayTime:300});</script>
+				</div>
+
+				<!-- 系统公告 -->
+				<div class="tender r">
+					<div class="sy_title bdb_d ovh">
+						<h2 class="l"><img src="images/icon_notice.png"><b class="fc">系统公告</b></h2>
+						<a href="page/DocList.html?id=4" class="r">查看更多></a>
+					</div>
+					<ul id="annoUl">
+						<!-- <li><a href="#"><b>·</b><span>测试公告1</span></a></li>
+						<li><a href="#"><b>·</b><span>测试公告2</span></a></li>
+						<li><a href="#"><b>·</b><span>测试公告3</span></a></li> -->
+					</ul>
+				</div>
+			</div>
+		</div>	
+
+		<!-- 友情链接 -->
+		<div class="link_more fix">
+			<h3>【友情链接】</h3>
+			<div class="r" style=" width: 1100px;">
+				<select  onchange=mbar(this) name="select">
+					<option>各省市政府网站</option>
+				</select>
+
+				<select  onchange=mbar(this) name="select">
+					<option>省内其他网站</option>
+				</select>
+
+				<select  onchange=mbar(this) name="select">
+					<option>各市政府网站</option>
+				</select>
+
+				<select  onchange=mbar(this) name="select">
+					<option>乡镇办事处网站</option>
+				</select>
+			</div>
+
+			<script type="text/javascript">
+				function mbar(sobj) {
+					var docurl =sobj.options[sobj.selectedIndex].value;
+					if (docurl != "") {
+						open(docurl,'_blank');
+						sobj.selectedIndex=0;
+						sobj.blur();
+					}
+				}
+			</script>
+		</div>
+
+	</div>
+</div>
+
+<!-- 返回顶部 -->
+<div class="side_box">
+	<ul>
+		<li class="sidetop">
+			<span></span>
+		</li>
+	</ul>
+</div>
+
+<!-- 底部 -->
+<div class="footerbox bg">
+	<div class="wid_main fix">
+		<div class="l">
+			<a href="#" target="blank" class="dib vm"><img src="images/dangzheng.png"></a>
+		</div>
+		<div class="l txt">
+			<p>主办单位：山东省水文局 </p>
+			<p>安徽淮河水资源科技有限公司建设和维护</p>
+		</div>
+	</div>
+</div>
+</body>
+</html>

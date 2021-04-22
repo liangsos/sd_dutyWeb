@@ -1,0 +1,758 @@
+body {
+    margin: 0px;
+    padding: 0px;
+    font: 12px Arial,Helvetica, Sans-Serif;
+}
+
+label {
+    font-weight: normal;
+    font-size: 14px;
+}
+
+a {
+    text-decoration: none;
+}
+
+div {
+    margin: 0px;
+    padding: 0px;
+}
+
+h3 {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 10px;
+}
+
+textarea {
+    resize: none;
+}
+
+/**�������*/
+#calendar,#calendar_record {
+    margin: 10px;
+}
+
+.fc .fc-header-right {
+    vertical-align: bottom;
+}
+
+.fc-header .fc-button {
+    margin-bottom: 13px;
+    vertical-align: bottom;
+    padding: 5px 10px;
+    line-height: 25px;
+}
+
+.fc-header .fc-button-today {
+    line-height: 16px;
+}
+
+.fc-mon {
+    padding: 5px;
+}
+
+.fc-header-title h2 {
+    margin-bottom: 10px;
+}
+
+.fc-cell-new {
+    border: none;
+    padding: 3px 5px;
+    border-width: 0;
+}
+
+.fc-day-number, .fc-day-number-right {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.fc-event-titlebg {
+    font-size: 15px;
+    color: #474748;
+}
+
+.ui-widget-header {
+    background: none;
+    background-color: #6DBAE1;
+    color: white;
+    font-weight: normal;
+}
+
+.fc th {
+    padding: 7px 0px;
+}
+
+/**����򲻿�����ʽ��*/
+.form-control[disabled], .form-control[readonly] {
+    cursor: pointer;
+    background-color: #eee;
+    opacity: 1;
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+    padding: 0;
+}
+
+.btn-visble {
+    display: none;
+}
+
+.sysheader {
+    padding: 10px 5px 10px 0px;
+    font-size: 14px;
+    font-weight: normal;
+    margin: 0;
+}
+
+.sysdesc {
+    padding: 10px 5px 10px 0px;
+    margin: 0;
+}
+
+.rowElem {
+    height: 35px;
+    clear: left;
+}
+
+    .rowElem label {
+        clear: left;
+        float: left;
+        padding: 2px 6px 2px 0px;
+        text-align: right;
+        width: 60px;
+    }
+
+.rowElem_User label {
+    width: 80px;
+}
+
+.rowElem_Info label {
+    text-align: left;
+    width: 300px;
+}
+
+.rowElem input {
+    float: left;
+    width: 200px;
+    padding: 5px;
+    font-size: 14px;
+}
+
+.rowElem select {
+    width: 100px;
+    padding: 2px;
+    font-size: 14px;
+}
+
+.rowElem span {
+    float: left;
+    width: 85px;
+}
+
+.clear {
+    clear: both;
+}
+
+#headercontent a {
+    text-decoration: none;
+}
+
+.dialogmask {
+    display: none;
+    z-index: 9999;
+    text-align: center;
+    padding-top: 50px;
+}
+
+.tooltip {
+    padding-bottom: 25px;
+    padding-left: 25px;
+    width: 100px !important;
+    padding-right: 25px;
+    display: none;
+    background: #999;
+    height: 70px;
+    color: red;
+    font-size: 12px;
+    padding-top: 25px;
+    z-order: 10;
+}
+
+.span_error {
+    font-size: 14px;
+    color: red;
+    margin: 10px 5px 5px 10px;
+}
+
+.dataTables_length select {
+    margin-bottom: 0px;
+    width: 60px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    height: 30px;
+    line-height: 30px;
+    padding: 4px 6px;
+    font-size: 14px;
+    vertical-align: middle;
+    border-radius: 4px;
+}
+
+.table-hover tbody tr:hover > th {
+    /*background-color: #ffd800;*/
+}
+
+.duty_count .control-label {
+    width: 65px;
+}
+
+.duty_count .controls {
+    float: left;
+    margin-left: 5px;
+}
+
+    .duty_count .controls input {
+        width: 90px;
+    }
+
+.duty_count_page .DTTT_container {
+    margin-top: -34px;
+    margin-left: 525px;
+    margin-bottom: 10px;
+    float: left;
+}
+
+.duty_count #btnSearch,.duty_count #btnExportTjb {
+    margin-left: 8px;
+}
+
+#loading {
+    background: #aaa;
+    color: black;
+    width: 220px;
+    height: 220px;
+    margin: 0 20px;
+    float: left;
+    border-radius: 10px;
+}
+
+.duty_loading {
+    display: none;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+table.dataTable.no-footer {
+    border-bottom: 1px solid #dddddd;
+}
+
+#userTable_wrapper .dataTables_processing {
+    margin-top: 20px;
+}
+
+.table-header {
+    background-color: #DDF1F0;
+}
+
+table th {
+    font-size: 14px;
+}
+
+table td {
+    font-size: 15px;
+    vertical-align: middle;
+}
+
+.table tbody tr td {
+    line-height: 30px;
+}
+
+table .btn {
+    padding: 4px 8px;
+}
+
+.dataTables_wrapper .dataTables_length {
+    float: right;
+    font-size: 16px;
+}
+
+    .dataTables_wrapper .dataTables_length label {
+        font-weight: normal;
+    }
+
+.modal-holiday {
+    width: 400px;
+}
+
+    .modal-holiday .modal-body {
+        padding: 15px 5px 0px 5px;
+    }
+
+.errorInfo {
+    color: red;
+}
+
+.modal-duty-user {
+    width: 500px;
+}
+
+    .modal-duty-user .modal-body {
+        padding: 0;
+    }
+
+.modal-record {
+    width: 900px;
+    margin: 10px auto;
+}
+
+    .modal-record .modal-body {
+        padding: 0;
+    }
+
+        .modal-record .modal-body .form-group {
+            margin-bottom: 10px;
+        }
+
+.modal-duty-work {
+    width: 400px;
+}
+
+    .modal-duty-work .modal-body {
+        padding: 5px 5px;
+    }
+
+.modal-exchange {
+    width: 400px;
+}
+
+    .modal-exchange .modal-body {
+        padding: 5px 5px;
+    }
+
+.fxkh-area {
+    padding-left: 0px;
+    padding-right: 15px;
+}
+
+.col-padding-left0 {
+    padding-left: 0px;
+}
+
+.errorInfo-Record, .errorInfo-water, .errorInfo-rain, .errorInfo-export, .errorInfo-work {
+    color: red;
+}
+
+.errorInfo-Record2 {
+    color: red;
+    width: 100%;
+    text-align: center;
+    margin-top: 5px;
+}
+
+#tableRecordTel, #tableConsult {
+    margin: 5px 0px;
+    table-layout: fixed;
+}
+
+#tableFax {
+    margin: 0px 0px 5px 0px;
+    table-layout: fixed;
+}
+
+    #tableRecordTel td, #tableConsult td, #tableFax td {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+.ul-station {
+    width: 220px;
+    height: 400px;
+    font-size: 15px;
+    border: solid 1px #5BC0DE;
+    padding: 5px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+    .ul-station li {
+        list-style-type: none;
+        margin: 3px;
+        padding: 0px;
+        cursor: pointer;
+    }
+
+        .ul-station li:hover {
+            background-color: #5BC0DE;
+        }
+
+.modal-water-main {
+    width: 380px;
+}
+
+    .modal-water-main .modal-body {
+        padding: 0px 40px;
+    }
+
+    .modal-water-main .modal-header, .modal-footer {
+        padding: 10px 15px;
+    }
+
+.modal-consult {
+    width: 900px;
+    margin: 10px auto;
+}
+
+    .modal-consult .modal-body {
+        padding: 10px 10px 0px 10px;
+    }
+
+        .modal-consult .modal-body .col-md-2 {
+            padding-right: 0px;
+        }
+
+.modal-view {
+    width: 900px;
+    margin: 15px auto;
+}
+
+    .modal-view .modal-body {
+        padding: 0px;
+    }
+
+.ul-station-small {
+    width: 120px;
+    height: 260px;
+}
+
+
+.file {
+    margin: 10px 10px 0px 20px;
+    position: relative;
+    display: inline-block;
+    background: #D0EEFF;
+    border: 1px solid #99D3F5;
+    border-radius: 4px;
+    padding: 4px 12px;
+    overflow: hidden;
+    color: #1E88C7;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 20px;
+}
+
+    .file input {
+        position: absolute;
+        font-size: 100px;
+        right: 0;
+        top: 0;
+        opacity: 0;
+    }
+
+    .file:hover {
+        background: #AADFFD;
+        border-color: #78C3F3;
+        color: #004974;
+        text-decoration: none;
+    }
+
+/*�ĵ�������ʽ*/
+.file-table tbody tr th {
+    padding: 4px;
+}
+
+.file-table tbody tr td {
+    padding: 2px;
+}
+
+.file-table .btn {
+    padding: 2px 4px;
+}
+
+/*��ѡ�ĵ��б�-�̶�����*/
+.table-fix {
+    table-layout: fixed;
+}
+
+    .table-fix tr td {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+.fax-tip {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    width: 260px;
+    height: 100px;
+    /*padding: 10px;*/
+    border: solid 1px #428BCA;
+    background: #D0EEFF;
+    z-index: 100013;
+}
+
+    .fax-tip .top {
+        width: 100%;
+        height: 20px;
+        background-color: #428BCA;
+    }
+
+        .fax-tip .top label {
+            width: 240px;
+            height: 20px;
+            padding: 2px 0px 2px 5px;
+            color: white;
+        }
+
+    .fax-tip .body {
+        width: 100%;
+        height: 55px;
+        padding: 5px 10px;
+    }
+
+    .fax-tip .footer {
+        width: 100%;
+        text-align: center;
+    }
+
+        .fax-tip .footer button {
+            width: 50px;
+            height: 20px;
+            font-size: 13px;
+        }
+
+.form-horizontal .control-label-left {
+    text-align: left;
+}
+
+.form-inline .control-label-left {
+    text-align: left;
+}
+
+.record-title {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+}
+
+    .record-title .title-label {
+        font-size: 18px;
+    }
+
+    .record-title .title-label-bold {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .record-title .title-label-bold-left {
+        font-size: 18px;
+        font-weight: bold;
+        margin-left: 50px;
+    }
+
+/*�����ѡ�б�*/
+.form-horizontal .fax-list-wait {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.fax-list-wait {
+    padding-top: 5px;
+    border-top: solid 1px #bbb;
+}
+
+    .fax-list-wait label, .fax-list-wait button {
+        float: left;
+    }
+
+    .fax-list-wait .title-wait {
+        width: 108px;
+        font-weight: bold;
+    }
+
+    .fax-list-wait .fax-info {
+        color: #5757FF;
+        margin-left: 15px;
+    }
+
+.form-record .form-group {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.col-sm-1-5 {
+    padding-left: 0px;
+}
+
+.nav-tabs > li.active {
+    background-color: #84CCC9;
+}
+
+.nav-tabs > li {
+    padding-top: 3px;
+}
+
+    .nav-tabs > li > a {
+        margin-right: 0px;
+    }
+
+.nav > li > a {
+    padding: 8px 12px;
+    color: #038a84;
+}
+
+.form-record > table > tbody > tr > th {
+    background-color: #DDF1F0;
+}
+
+.btn-color {
+    background-color: #0FAAF8;
+    border-color: #0FAAF8;
+}
+
+    .btn-color:hover,
+    .btn-color:focus,
+    .btn-color.focus,
+    .btn-color:active,
+    .btn-color.active {
+        background-color: #0FAAF8;
+        border-color: #0FAAF8;
+    }
+
+/*ֵ����־-��ϸ*/
+.duty_bb_info {
+    width: 950px;
+    margin: 20px auto;
+    font-family: "SimSun";
+    position: relative;
+}
+
+.bb_info_title {
+    font-size: 45px;
+    font-weight: bold;
+    font-family: "KaiTi";
+    width: 100%;
+    text-align: center;
+}
+
+.bb_info_date {
+    width: 100%;
+    text-align: right;
+    font-size: 20px;
+}
+
+.bb_info_lab {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.bb-info-leader {
+    font-size: 22px;
+}
+
+.bb_info_body {
+    margin-left: 30px;
+    margin-top: 10px;
+    font-size: 20px;
+    line-height: 32px;
+}
+
+    .bb_info_body .title_span {
+        font-weight: bold;
+        line-height: 50px;
+    }
+
+.bb_info_title_time {
+    float: left;
+    width: 100px;
+}
+
+.bb_info_detail {
+    float: left;
+    width: 810px;
+}
+
+.bb_info_export {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+.bb_info_link {
+    font-size: 16px;
+    background-color: #FFB400;
+    border-color: #FFB400;
+}
+
+    .bb_info_link:hover,
+    .bb_info_link:focus,
+    .bb_info_link.focus,
+    .bb_info_link:active,
+    .bb_info_link.active {
+        background-color: #FFB400;
+        border-color: #FFB400;
+    }
+
+.bb_export {
+    background-color: #FFB400;
+    border-color: #FFB400;
+}
+
+    .bb_export:hover,
+    .bb_export:focus,
+    .bb_export.focus,
+    .bb_export:active,
+    .bb_export.active {
+        background-color: #FFB400;
+        border-color: #FFB400;
+    }
+
+#duty_user .fc-header td, #duty_record .fc-header td {
+    border-right: none;
+    border-bottom: none;
+}
+
+.duty-count-db{
+    font-weight:bold;
+    background-color:#E6EDF8 !important;
+}
+
+.padding-left-right0{
+    padding-left:0px;
+    padding-right:0px;
+}
+
+.ul-file-organ {
+    width: 100%;
+    height: 260px;
+    font-size: 15px;
+    border: solid 1px #5BC0DE;
+    padding: 5px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+    .ul-file-organ li {
+        list-style-type: none;
+        margin: 3px;
+        padding: 0px;
+        cursor: pointer;
+        height:21px;
+        overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+    }
+
+        .ul-file-organ li:hover,.ul-file-organ li:active, .ul-file-organ li::selection,.ul-file-organ li.active{
+            background-color: #5BC0DE;
+        }
+
+#emailTable td{
+    word-break: break-all;
+    white-space: normal;
+}

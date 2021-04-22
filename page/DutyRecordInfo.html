@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>山东省水情值班系统</title>
+    <link href="../lib/bootstrap3/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="../lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="../lib/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css" />
+
+    <!-- HTML5 适应IE9以及以下版本-->
+    <!--[if lt IE 9]>
+        <script src="../Scripts/html5shiv.js"></script>
+        <script src="../Scripts/respond.js"></script>
+    <![endif]-->
+    <script src="../lib/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="../lib/bootstrap3/js/bootstrap.js" type="text/javascript"></script>
+    <script src="../lib/jquery-dataTables/jquery.dataTables.js" type="text/javascript"></script>
+    <script src="../lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
+    <script src="../lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.zh-CN.js" type="text/javascript"></script>
+    <script src="../lib/jquery.dateFormat.js" type="text/javascript"></script>
+    <script src="../lib/TableFreeze.js" type="text/javascript"></script>
+    <script src="../lib/webservice.js" type="text/javascript"></script>
+    <script src="../lib/common.js" type="text/javascript"></script>
+    <script src="../lib/jquerysession.js" type="text/javascript"></script>
+    <script src="../api/baseApi.js" type="text/javascript"></script>
+
+    <link href="../lib/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
+    <link href="../css/duty_style.css" rel="stylesheet" type="text/css" />
+
+    <script src="../lib/uploadify/jquery.uploadify.js" type="text/javascript"></script>
+    <script src="../js/duty_record_info.js" type="text/javascript"></script>
+    <!-- <script type="text/javascript">
+        $(function () {
+            //子页未登陆跳转登陆页
+            var _duty_login = "<%=_duty_login%>";
+
+            if (_duty_login == "0") {
+                window.parent.toLogin();
+            }
+            //当前登陆人员
+            var _duty_user_name = "<%=_duty_user_name%>";
+            //当前值班人员
+            var _duty_today = "<%=_duty_today%>";
+            window.parent.updLoginUser(_duty_user_name, _duty_today);
+        });
+    </script>   -->
+</head>
+<body>
+    <!-- <%--隐藏域===登陆人员ID--%> -->
+    <input id="_hid_duty_user_name" type="hidden" runat="server" clientidmode="Static" />
+    <!-- <%--值班角色：1管理员（可做任意操作）2防办领导（不受时间、IP限制 调班或新增人员） 3值班人员（指定时间 指定IP调班）--%> -->
+    <input id="_hid_duty_role" type="hidden" runat="server" clientidmode="Static" />
+    <!-- <%--值班人员 真实姓名--%> -->
+    <input id="_hid_duty_name" type="hidden" runat="server" clientidmode="Static" />
+    <!-- <%--日期-今天 --%> -->
+    <input id="_hid_duty_time_today" type="hidden" runat="server" clientidmode="Static" />
+    <!-- <%--编辑日期--%> -->
+    <input id="_hid_duty_date" type="hidden" runat="server" clientidmode="Static" />
+
+    <!-- <%--长轮询--%> -->
+    <!-- <div class="fax-tip" style="display: none;">
+        <div class="top">
+            <label>传真提示</label>
+            <button type="button" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        </div>
+        <div class="body">
+            <label id="labFaxMsg"></label>
+        </div>
+        <div class="footer">
+            <button id="btnFaxMsgClose">关闭</button>
+        </div>
+    </div> -->
+
+    <div class="record-title">
+    </div>
+    <ul id="navRecord" class="nav nav-tabs" style="font-size: 16px;">
+        <li class="active"><a href="#fxkh" data-toggle="tab">雨水情</a></li>
+        <li><a href="#gqzq" data-toggle="tab">工情灾情</a></li>
+        <li><a href="#phone" data-toggle="tab">电话</a></li>
+        <!-- <li><a href="#fax" data-toggle="tab">传真</a></li> -->
+        <li><a href="#fxkhxd" data-toggle="tab">防汛抗旱行动</a></li>
+        <li><a href="#consult" data-toggle="tab">防汛会商</a></li>
+    </ul>
+    <div id="myTabContent" class="tab-content">
+        <div class="form-horizontal form-record tab-pane active in" id="fxkh">
+            <div class="form-group" style="margin-top: 10px;">
+                <label class="col-sm-1-5 control-label">水情信息</label>
+                
+                <div class="col-sm-10-5 fxkh-area">
+                    <textarea id="txtWaterInfo" class="form-control" rows="5"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <!-- <div style="margin-left: 100px;float: left;margin-top: -10px;">
+                    <div>
+                        <label style=" inline-size: auto;margin-left: 15px;margin-bottom: 5px;" class="col-sm-1-5 control-label">主要站点水情</label>
+                    </div>
+                    <div class="btn-group-vertical">
+                        <button type="button" class="btn btn-primary btnWaterMain">水库站点水情</button>
+                        <button type="button" class="btn btn-primary btnWaterMainHd">河道站点水情</button>
+                    </div>
+                </div> -->
+                <label class="col-sm-1-5 control-label">主要站点水情</label>
+                <div class="col-sm-10-5 fxkh-area">
+                    <textarea id="txtWaterMain" class="form-control" rows="4"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <!-- <div style="margin-left: 127px;float: left;margin-top: -10px;">
+                    <div>
+                        <label style=" inline-size: auto;margin-left: 15px;margin-bottom: 5px;" class="col-sm-1-5 control-label">雨情信息</label>
+                    </div>
+                    <div class="btn-group-vertical">
+                        <button type="button" class="btn btn-primary btnRainInfo">最新雨情</button>
+                    </div>
+                </div> -->
+                <label class="col-sm-1-5 control-label">雨情信息</label>
+                <div class="col-sm-10-5 fxkh-area">
+                    <textarea id="txtRainInfo" class="form-control" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-1-5 control-label">最大雨量点</label>
+                <div class="col-sm-10-5 fxkh-area">
+                    <textarea id="txtRainMain" class="form-control" rows="4"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12" style="text-align: center;">
+                    <label id="errorRecord" class="errorInfo"></label>
+                    <!-- <button type="button" class="btn btn-primary btnWaterInfo">最新水情</button> -->
+                    <button type="button" class="btn btn-primary btnWaterMain">水库站点水情</button>
+                    <button type="button" class="btn btn-primary btnWaterMainHd">河道站点水情</button>
+                    <button type="button" class="btn btn-primary btnRainInfo">最新雨情</button>
+                    <!-- <button type="button" class="btn btn-primary btnRainMain" style="display: none;">主要站点雨情</button> -->
+                    <button type="button" class="btn btn-primary btnSave"><span class="fa fa-save"></span>&nbsp;&nbsp;保存</button>
+                    <button type="button" class="btn btn-default btnCancel"><span class="fa fa-undo"></span>&nbsp;&nbsp;取消</button>
+                </div>
+            </div>
+        </div>
+        <div class="form-horizontal form-record tab-pane fade" id="gqzq">
+            <div class="form-group" style="margin-top: 10px;">
+                <label class="col-sm-1-5 control-label">工情灾情</label>
+                <div class="col-sm-10-5 fxkh-area">
+                    <textarea id="txtDisaster" class="form-control" rows="12" maxlength="1000"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12" style="text-align: center;">
+                    <label id="errorZq" class="errorInfo"></label>
+                    <button type="button" class="btn btn-primary btnSave"><span class="fa fa-save"></span>&nbsp;&nbsp;保存</button>
+                    <button type="button" class="btn btn-default btnCancel"><span class="fa fa-undo"></span>&nbsp;&nbsp;取消</button>
+                </div>
+            </div>
+        </div>
+        <div class="form-horizontal form-record tab-pane fade" id="phone">
+            <table id="tableRecordTel" class="table table-hover table-bordered">
+                <tr>
+                    <th style="width: 80px;">电话类型</th>
+                    <th style="width: 140px;">来去电号码</th>
+                    <th style="width: 160px;">来去电单位</th>
+                    <th>来去电内容</th>
+                    <th style="width: 155px;">操作</th>
+                </tr>
+            </table>
+            <div class="form-group" style="margin-top: 10px;">
+                <label class="col-sm-1-5 control-label">电话类型</label>
+                <div class="col-sm-1-5 col-padding-left0">
+                    <select id="listTypeTel" class="form-control">
+                        <option value="0">来电</option>
+                        <option value="1">去电</option>
+                    </select>
+                </div>
+                <label class="col-sm-1-5 control-label lab_tel_phone">来电号码</label>
+                <div class="col-sm-3 fxkh-area">
+                    <input type="text" id="txtTelephone" class="form-control" maxlength="20" />
+                </div>
+
+                <label class="col-sm-1-5 control-label lab_tel_units">来电单位</label>
+                <div class="col-sm-3 fxkh-area" style="width: 26.33333333%;">
+                    <input type="text" id="txtUnits" class="form-control" maxlength="50" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-1-5 control-label lab_tel_content">来电内容</label>
+                <div class="col-sm-10-5 fxkh-area">
+                    <textarea id="txtContent" class="form-control" rows="3" maxlength="250"></textarea>
+                </div>
+            </div>
+            <div class="form-group" style="margin-bottom: 0px; position: relative;">
+                <label class="col-sm-1-5 control-label">录音文件</label>
+                <div class="col-sm-10-5 fxkh-area">
+                    <input type="file" id="txtAudio" class="file" name="file"/>
+                    <label class="control-label" style="position: absolute; left: 283px; top: 8px;">提示：允许上传录音文件格式为mp3、wma、wav</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12" style="text-align: center;">
+                    <label id="errorTel" class="errorInfo"></label>
+                    <button type="button" class="btn btn-primary btnAddTel"><span class="fa fa-plus"></span>&nbsp;&nbsp;新增</button>
+                    <button type="button" class="btn btn-primary btnSave"><span class="fa fa-save"></span>&nbsp;&nbsp;保存</button>
+                    <button type="button" class="btn btn-default btnCancel"><span class="fa fa-undo"></span>&nbsp;&nbsp;取消</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-horizontal form-record tab-pane fade" id="fxkhxd">
+            <div class="form-group" style="margin-top: 10px;">
+                <label class="col-sm-1-5 control-label">防汛抗旱行动</label>
+                <div class="col-sm-10-5 fxkh-area">
+                    <textarea id="txtAction" class="form-control" rows="12" maxlength="1000"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12" style="text-align: center;">
+                    <label id="errorFxkhxd" class="errorInfo"></label>
+                    <button type="button" class="btn btn-primary btnSave"><span class="fa fa-save"></span>&nbsp;&nbsp;保存</button>
+                    <button type="button" class="btn btn-default btnCancel"><span class="fa fa-undo"></span>&nbsp;&nbsp;取消</button>
+                </div>
+            </div>
+        </div>
+        <div class="form-horizontal form-record tab-pane fade" id="consult">
+            <div class="form-group" style="margin-top: 10px;">
+                <label class="col-sm-1-5 control-label">标题</label>
+                <div class="col-sm-10-5 fxkh-area">
+                    <input id="txtConsultTitle" class="form-control" maxlength="50" />
+                </div>
+            </div>
+            <div class="form-group" style="margin-top: 10px;">
+                <label class="col-sm-1-5 control-label">会商内容</label>
+                <div class="col-sm-10-5 fxkh-area">
+                    <textarea id="txtConsult" class="form-control" rows="12" maxlength="1000"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12" style="text-align: center;">
+                    <label id="errorConsult" class="errorInfo"></label>
+                    <button type="button" class="btn btn-primary btnSave"><span class="fa fa-save"></span>&nbsp;&nbsp;保存</button>
+                    <button type="button" class="btn btn-default btnCancel"><span class="fa fa-undo"></span>&nbsp;&nbsp;取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <%--水情主要站点modal--%> -->
+    <div class="modal fade" id="modalWaterMain" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-water-main">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">主要站点水情</h4>
+                </div>
+                <div class="modal-body form-horizontal">
+                    <div class="form-group">
+                        <div id="pinyinDiv" class="control-group " style="margin-top:5px">
+                            <label class="control-label">拼音查询</label>
+                            <input id="txt_py" class="sDay select selectexpinying" size="16" type="text" style="padding: 0px;width: 89px;height: 22px;margin-right: 10px;font-size: 14px;" />
+                        </div>
+                        <div style="width: 120px; margin-right: 5px; float: left;">
+                            <label>待选站</label>
+                            <ul id="ulNotWater" class="ul-station ul-station-small">
+                            </ul>
+                        </div>
+                        <div style="float: left; width: 75px;">
+                            <button type="button" class="btn btn-primary btnAllWater" style="margin-top: 125px;"><i class="fa fa-arrow-right"></i>&nbsp;&nbsp;全选</button>
+                            <button type="button" class="btn btn-primary btnAllNotWater" style="margin-top: 10px;"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;反选</button>
+                        </div>
+                        <div style="width: 120px; margin-left: 5px; float: left;">
+                            <label>已选站</label>
+                            <ul id="ulYesWater" class="ul-station ul-station-small">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: -20px; margin-bottom: 10px;">
+                        <label class="col-sm-3 control-label" style="padding-right: 0px;">结束时间</label>
+                        <div class="input-group date date-water" style="padding-left: 15px; width: 243px;" data-date="" data-link-field="hid_date">
+                            <input id="txtWaterDate" class="form-control" size="16" type="text" readonly>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+                        <input type="hidden" id="hid_date" value="" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <label id="errorWater" class="errorInfo"></label>
+                    <button type="button" class="btn btn-primary btnSearchWater">查询</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <%--水情河道站点modal--%> -->
+    <div class="modal fade" id="modalWaterMainHd" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-water-main">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">河道站点水情</h4>
+                </div>
+                <div class="modal-body form-horizontal">
+                    <div class="form-group">
+                        <div id="pinyinDivHd" class="control-group " style="margin-top:5px">
+                            <label class="control-label">拼音查询</label>
+                            <input id="txt_pyHd" class="sDay select selectexpinying" size="16" type="text" style="padding: 0px;width: 89px;height: 22px;margin-right: 10px;font-size: 14px;" />
+                        </div>
+                        <div style="width: 120px; margin-right: 5px; float: left;">
+                            <label>待选站</label>
+                            <ul id="ulNotWaterHd" class="ul-station ul-station-small">
+                            </ul>
+                        </div>
+                        <div style="float: left; width: 75px;">
+                            <button type="button" class="btn btn-primary btnAllWaterHd" style="margin-top: 125px;"><i class="fa fa-arrow-right"></i>&nbsp;&nbsp;全选</button>
+                            <button type="button" class="btn btn-primary btnAllNotWaterHd" style="margin-top: 10px;"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;反选</button>
+                        </div>
+                        <div style="width: 120px; margin-left: 5px; float: left;">
+                            <label>已选站</label>
+                            <ul id="ulYesWaterHd" class="ul-station ul-station-small">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: -20px; margin-bottom: 10px;">
+                        <label class="col-sm-3 control-label" style="padding-right: 0px;">结束时间</label>
+                        <div class="input-group date date-waterHd" style="padding-left: 15px; width: 243px;" data-date="" data-link-field="hid_date">
+                            <input id="txtWaterDateHd" class="form-control" size="16" type="text" readonly>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+                        <input type="hidden" id="hid_date" value="" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <label id="errorWaterHd" class="errorInfo"></label>
+                    <button type="button" class="btn btn-primary btnSearchWaterHd">查询</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <%--雨情主要站点modal--%> -->
+    <div class="modal fade" id="modalRainMain" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-water-main">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">主要站点雨情</h4>
+                </div>
+                <div class="modal-body form-horizontal">
+                    <div class="form-group">
+                        <div style="width: 120px; margin-right: 5px; float: left;">
+                            <label>待选站</label>
+                            <ul id="ulNotRain" class="ul-station ul-station-small">
+                            </ul>
+                        </div>
+                        <div style="float: left; width: 75px;">
+                            <button type="button" class="btn btn-primary btnAllRain" style="margin-top: 125px;"><i class="fa fa-arrow-right"></i>&nbsp;&nbsp;全选</button>
+                            <button type="button" class="btn btn-primary btnAllNotRain" style="margin-top: 10px;"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;反选</button>
+                        </div>
+                        <div style="width: 120px; margin-left: 5px; float: left;">
+                            <label>已选站</label>
+                            <ul id="ulYesRain" class="ul-station ul-station-small">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: -20px; margin-bottom: 10px;">
+                        <label class="col-sm-3 control-label" style="padding-right: 0px;">开始时间</label>
+                        <div class="input-group date date-rain col-sm-9" style="padding-left: 15px; width: 243px;" data-date="" data-link-field="hid_date2">
+                            <input id="txtRainDate" class="form-control" size="16" type="text" readonly>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+                        <input type="hidden" id="hid_date2" value="" />
+                    </div>
+                    <div class="form-group" style="margin-bottom: 10px;">
+                        <label class="col-sm-3 control-label" style="padding-right: 0px;">结束时间</label>
+                        <div class="input-group date date-rain col-sm-9" style="padding-left: 15px; width: 243px;" data-date="" data-link-field="hid_date3">
+                            <input id="txtRainDate2" class="form-control" size="16" type="text" readonly>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+                        <input type="hidden" id="hid_date3" value="" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <label id="errorRain" class="errorInfo"></label>
+                    <button type="button" class="btn btn-primary btnSearchRain">查询</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <%--待选传真列表--%> -->
+    <!-- <div class="modal fade" id="modalFaxChoose" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-record">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">待处理传真列表</h4>
+                </div>
+                <div class="modal-body form-horizontal">
+                    <div class="form-group fax-list-wait" style="margin-bottom: 5px;">
+                        <label class="control-label">&nbsp;&nbsp;时间</label>
+                        <div class="input-group date date-day" style="width: 135px; float: left;" data-link-field="hid_date_fax3">
+                            <input id="txtBeginTimeFax" class="form-control" style="padding: 4px 8px;" size="16" type="text" readonly>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+                        <input type="hidden" id="hid_date_fax3" value="" />
+                        <label class="control-label" style="width: 20px; float: left;">～</label>
+                        <div class="input-group date date-day" style="width: 135px; float: left;" data-link-field="hid_date_fax4">
+                            <input id="txtEndTimeFax" class="form-control" style="padding: 4px 8px;" size="16" type="text" readonly>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+                        <input type="hidden" id="hid_date_fax4" value="" />
+                        <button type="button" class="btn  btn-default btnSearchFaxChoose">查询</button>
+                        <label class="control-label fax-info">说明:红色为最新的传真,其余为未处理传真。</label>
+                    </div>
+                    <table id="fileTableFaxChoose" class="table table-hover table-bordered file-table table-fix" style="margin-bottom: 0px;">
+                        <tr>
+                            <th style="width: 130px;">时间</th>
+                            <th>传真电话</th>
+                            <th>文件名称</th>
+                            <th style="width: 170px;">操作</th>
+                        </tr>
+                    </table>
+                    <div class="div-fax2" style="width: 100%; display: none;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- <%--来文单位选择modal--%> -->
+    <div class="modal fade" id="modalFileOrgan" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-water-main">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">来文单位选择</h4>
+                </div>
+                <div class="modal-body form-horizontal">
+                    <div class="form-group">
+                        <div style="width: 158px; margin-right: 5px; float: left;">
+                            <div style="padding: 5px 0px;">
+                                <label>来文单位</label>
+                            </div>
+                            <ul id="ulOrgan" class="ul-file-organ">
+                            </ul>
+                        </div>
+                        <div style="width: 158px; margin-left: 5px; float: left;">
+                            <div style="padding: 5px 0px;">
+                                <label>文号</label>
+                            </div>
+                            <ul id="ulOrganAbbr" class="ul-file-organ">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <label id="errorFileOrgan" class="errorInfo"></label>
+                    <button type="button" class="btn btn-primary btnSureFileOrgan">确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

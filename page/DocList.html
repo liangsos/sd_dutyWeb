@@ -1,0 +1,304 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta content="山东省防汛抗旱值班管理系统" http-equiv="keywords">
+<meta name="description" content="山东省水文局">
+<meta name="applicable-device" content="pc,mobile">
+<meta http-equiv="Cache-Control" content="no-siteapp"/>
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+
+<title>山东省水情值班系统</title>
+
+<link rel="stylesheet" href="../css/index.css" type="text/css">
+<link rel="stylesheet" type="text/css" href="../css/children.css">
+<link href="../lib/bootstrap3/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="../lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<link href="../lib/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css" />
+
+<script src="../lib/jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="../lib/bootstrap3/js/bootstrap.js" type="text/javascript"></script>
+<script src="../lib/jquery-dataTables/jquery.dataTables.js" type="text/javascript"></script>
+<script src="../lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
+<script src="../lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.zh-CN.js" type="text/javascript"></script>
+<script src="../lib/jquery.dateFormat.js" type="text/javascript"></script>
+<script src="../lib/TableFreeze.js" type="text/javascript"></script>
+<script src="../lib/webservice.js" type="text/javascript"></script>
+<script src="../lib/common.js" type="text/javascript"></script>
+<script src="../lib/jquerysession.js" type="text/javascript"></script>
+<script src="../api/baseApi.js" type="text/javascript"></script>
+
+<link href="../lib/jquery-dataTables/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+<link href="../lib/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
+<link href="../lib/bootstrap-validator/css/bootstrapValidator.css" rel="stylesheet" type="text/css" />
+<link href="../css/duty_style.css" rel="stylesheet" type="text/css" />
+<script src="../lib/uploadify/jquery.uploadify.js" type="text/javascript"></script>
+<script src="../lib/bootstrap-validator/js/bootstrapValidator.js" type="text/javascript"></script>
+<script src="../lib/bootstrap-validator/js/zh_CN.js" type="text/javascript"></script>
+<script src="../js/docList.js" type="text/javascript"></script>
+
+
+<script type="text/javascript" src="../lib/jquery.SuperSlide.2.1.1.js"></script>
+<script type="text/javascript" src="../lib/public.js"></script><!-- 菜单js等-->
+
+
+
+</head>
+<body>
+<!--头部-->
+<div class="topbox bg">
+	<div class="wid_main fix">
+        <div class="logo l"><img src="../images/login_03.png" alt="logo" /></div>
+        <div style="float: left;color: #ffffff;">
+            <h3 style="font-size: 33px;font-weight: bold;letter-spacing: 6px;margin-top: 45px;margin-left: 20px;">山东省防汛抗旱值班管理系统</h3>
+            <!-- <p style="font-size: 12px;color: #6a8cc3;">Hydrological information service system of Shandong Hydrological Bureau</p> -->
+        </div>
+		<!-- 搜索 -->
+		<!-- <div class="search_box r bora_5">
+			<form>
+				<div>
+					<input type="text" name="" placeholder="请输入关键词检索">
+					<button type="submit"><img src="images/search.png"></button>
+				</div>
+			</form>
+		</div> -->
+	</div>
+</div>
+<!-- top end -->
+
+<!-- 主体内容框 -->
+<div class="contentbox wid_main bora_5">
+	<div class="content">
+
+		<!-- 导航栏部分 -->
+		<div class="top_nav bg bora_5 ovh">
+			<ul class="fix">
+				<li id="homeFix" class="cur">
+					<a href="../home.html">首 页</a>
+				</li>
+				<li id="docFix">
+					<a href="../page/DocList.html?id=1">防汛文档</a>
+				</li>
+				<li id="emailFix">
+					<a href="../page/DocList.html?id=2">邮件管理</a>
+				</li>
+				<li id="matFix">
+					<a href="../page/DocList.html?id=3">阶段材料</a>
+				</li>
+				<li id="annoFix">
+					<a href="../page/DocList.html?id=4">通知公告</a>
+				</li>
+				<li>
+					<a href="../index.html">值班管理</a>
+				</li>
+			</ul>
+		</div>
+		<!-- 导航end -->
+
+		<!-- 当前位置 -->
+		<div class="gonggao bdb_d fix">
+			<div class="txtScroll-top l fix zy_cur">
+				<div class="l tit"><img src="../images/icon_location.png"><b class="dib vm">当前位置：</b></div>
+				<p class="l"><a href="../home.html">首页</a><span><a id="locationNow" href="#"></a></span></p>
+			</div>
+
+			<!-- 时间 -->
+			<div class="timebox fc r">
+				<script type="text/javascript" src="../lib/show_date.js"></script>
+			</div>
+		</div>
+
+		<!-- 子页内容框 -->
+		<div class="zy_contentbox">
+			<!-- zy_content -->
+			<div class="zy_content fix">
+				<!-- 左边栏 -->
+				<!-- <div class="zy_left_con">
+					<b></b>
+					<div class="zy_twonav">
+						<h2 class="tit">信息公开</h2>
+						<ul>
+							<li class="cur"><a href="info_public.html">双公示</a></li>
+							<li><a href="info_random.html">双随机一公开</a></li>
+						</ul>
+					</div>
+					<div class="contact">
+						<h2 class="tit">联系我们</h2>
+						<dl>
+							<dd><img src="images/icon_tel.png"><a>电话：0854-8762536</a></dd>
+							<dd><img src="images/icon_email.png"><a>信箱：1145202000@163.com</a></dd>
+							<dd><img src="images/icon_pin.png"><a>地址：贵州省黔南州福泉市工业园区特1号</a></dd>
+						</dl>
+					</div>
+				</div> -->
+				
+				<!-- 右边内容 -->
+				<div class="zy_right_con">
+					<!-- 当前位置 -->
+					<div class="zy_title fix">
+						<h2><i></i></h2>
+					</div>
+					<!-- 内容展示块-->
+					<div class="zy_public_box">
+						<!-- <div class="tit">
+							<a class="cur" href="info_public.html">行政许可公示</a>
+							<a href="info_public_cf.html">行政处罚公示</a>
+						</div> -->
+						<!-- 行政许可公示 -->
+						<div class="zy_public_list">
+							<!-- <form class="search_list">
+								<div class="box dib vm"><span>行政相对人：</span><input type="text" name=""></div>
+								<div class="box dib vm">
+									<span>申请时间：</span>
+									<div class="dib vm laydate-icon" id="startTime01"></div>
+									—
+									<div class="dib vm laydate-icon" id="endTime01"></div>
+								</div>
+								<button type="submit">查 询</button>
+                            </form> -->
+                            <div class="form-inline" id="doc">
+                                <div class="form-group" style="margin: 5px 0px -30px 0px;">
+                                    <label class="control-label">开始日期</label>
+                                    <div class="input-group date form_date" style="width: 140px;" data-date="" data-link-field="hid_date_doc">
+                                        <input id="txtBeginTimeD" class="form-control" size="16" type="text" readonly>
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                    </div>
+                                    <input type="hidden" id="hid_date_doc" value="" />
+                                    <label class="control-label">结束日期</label>
+                                    <div class="input-group date form_date" style="width: 140px;" data-date="" data-link-field="hid_date_doc2">
+                                        <input id="txtEndTimeD" class="form-control" size="16" type="text" readonly>
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                    </div>
+                                    <input type="hidden" id="hid_date_doc2" value="" />
+                                    <!-- <label class="control-label">文件类型</label>
+                                    <select id="fileType" class="form-control">
+                                    </select> -->
+                                    <button id="btnSearch" class="btn btn-info btn-color"><span class='fa fa-search'></span>&nbsp;&nbsp;查询</button>
+                                </div>
+                            </div>
+                            
+							<!-- 防汛文档列表 -->
+							<table id="docTable" class="zy_table_list" style="display: none;">
+						        <thead>
+						            <tr>
+                                        <th>id</th>
+                                        <th style="width: 110px;" class="table-header">文件类型</th>
+                                        <th style="width: 260px;" class="table-header">文件名称</th>
+                                        <th class="table-header">文件说明</th>
+                                        <!-- <th style="width: 140px;" class="table-header">操作</th> -->
+						            </tr>
+						        </thead>
+							</table>
+							
+							<!-- 邮件列表 -->
+							<table id="emailTable" class="zy_table_list" style="display: none;">
+						        <thead>
+						            <tr>
+                                        <th>id</th>
+										<th style="width: 215px;" class="table-header">主题</th>
+										<th id="emailFile" class="table-header">附件</th>
+										<th class="table-header">邮件内容</th>
+										<th class="table-header">发件方</th>
+										<th class="table-header">接收时间</th>
+                                        <th style="width: 105px;" class="table-header">操作</th>
+						            </tr>
+						        </thead>
+							</table>
+							
+							<!-- 阶段材料 -->
+							<table id="matTable" class="zy_table_list" style="display: none;">
+						        <thead>
+						            <tr>
+                                        <th>id</th>
+										<th style="width: 260px;" class="table-header">文件名称</th>
+										<th class="table-header">文件说明</th>
+										<th style="width: 110px;" class="table-header">更新日期</th>
+										<!-- <th style="width: 140px;" class="table-header">操作</th> -->
+						            </tr>
+						        </thead>
+							</table>
+							
+							<!-- 阶段材料 -->
+							<table id="annoTable" class="zy_table_list" style="display: none;">
+						        <thead>
+						            <tr>
+                                        <th>id</th>
+										<th style="width: 260px;" class="table-header">文件名称</th>
+										<th class="table-header">文件说明</th>
+										<th style="width: 110px;" class="table-header">更新日期</th>
+										<!-- <th style="width: 140px;" class="table-header">操作</th> -->
+						            </tr>
+						        </thead>
+						    </table>
+						    
+						</div>
+						
+					</div>
+				</div>
+			</div>
+			<!-- zy_content end -->
+		</div>
+		<!-- 内容框end -->	
+
+		<!-- 友情链接 -->
+		<div class="link_more">
+			<h3>【友情链接】</h3>
+			<select  onchange=mbar(this) name="select">
+				<option>各省市政府网站</option>
+		        <!-- <option value=''>山东省人民政府</option>
+		        <option value=''>山东省人民政府</option> -->
+			</select>
+
+			<select  onchange=mbar(this) name="select">
+				<option>省内其他网站</option>
+		        <!-- <option value='http://www.gzegn.gov.cn/'>山东政务网</option> -->
+			</select>
+
+			<select  onchange=mbar(this) name="select">
+				<option>各市州政府网站</option>
+			</select>
+
+			<select  onchange=mbar(this) name="select">
+				<option>乡镇办事处网站</option>
+			</select>
+
+			<script type="text/javascript">
+				function mbar(sobj) {
+					var docurl =sobj.options[sobj.selectedIndex].value;
+					if (docurl != "") {
+						open(docurl,'_blank');
+						sobj.selectedIndex=0;
+						sobj.blur();
+					}
+				}
+			</script>
+		</div>
+
+	</div>
+</div>
+
+<!-- 返回顶部 -->
+<div class="side_box">
+	<ul>
+		<li class="sidetop">
+			<span></span>
+		</li>
+	</ul>
+</div>
+
+<!-- 底部 -->
+<div class="footerbox bg">
+	<div class="wid_main fix">
+		<div class="l">
+			<a href="http://bszs.conac.cn/sitename?method=show&id=09D70ADDD9E64427E053022819AC3042" target="blank" class="dib vm"><img src="../images/dangzheng.png"></a>
+		</div>
+		<div class="l txt">
+			<p>主办单位：山东省水文局 </p>
+			<p>淮委水文局（信息中心）建设和维护</p>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>
