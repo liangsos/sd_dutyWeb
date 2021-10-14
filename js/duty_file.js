@@ -1,12 +1,15 @@
 ﻿$(function () {
     // const baseUrl = "http://localhost:8088/sd-duty/api/";
     //token
-    var token = sessionStorage.getItem("sessionId");
+    // var token = sessionStorage.getItem("sessionId");
+    var token = $.cookie('sessionId');
     //登陆人员
-    var _duty_user_name = sessionStorage.getItem("userName");
+    // var _duty_user_name = sessionStorage.getItem("userName");
+    var _duty_user_name = $.cookie('userName');
     var _duty_name = sessionStorage.getItem("realName");
     //用户角色
-    var _duty_role = sessionStorage.getItem("roleId");
+    // var _duty_role = sessionStorage.getItem("roleId");
+    var _duty_role = $.cookie('roleId');
 
     //会商表格
     var tableConsult = null;

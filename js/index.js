@@ -1,7 +1,10 @@
 //用户角色 1管理员 2值班领导 3普通用户
 var _duty_role = $.session.get("roleId");
+// var _duty_role = $.cookie('roleId');
 var token = $.session.get("sessionId");
+// var token = $.cookie('sessionId');
 var addvcd = $.session.get("addvcd");
+// var addvcd = $.cookie('addvcd');
 // var _duty_role = "<%=_duty_role%>";
 var extNodes = new Array({ text: "值班记录", leaf: true, icon: "images/icon/record.png", qtip: "page/DutyRecord.html", qtitle: '值班记录' },
                  { text: "文件管理", leaf: true, icon: "images/icon/file.png", qtip: "page/DutyFile.html", qtitle: '文件管理' },
@@ -22,8 +25,8 @@ if (_duty_role == "1")
           [
             { text: "人员管理", leaf: true, qtip: "page/DutyUser.html", qtitle: '人员管理' },
             // { text: "站点管理", leaf: true, qtip: "page/DutyStation.html", qtitle: '站点管理' },
-            { text: "机构管理", leaf: true, qtip: "page/DutyOrgan.html", qtitle: '机构管理' },
-            { text: "来文单位", leaf: true, qtip: "page/DutyFileOrgan.html", qtitle: '来文单位' },
+            // { text: "机构管理", leaf: true, qtip: "page/DutyOrgan.html", qtitle: '机构管理' },
+            // { text: "来文单位", leaf: true, qtip: "page/DutyFileOrgan.html", qtitle: '来文单位' },
             { text: "法定假管理", leaf: true, qtip: "page/DutyHoliday.html", qtitle: '法定假管理' },
             { text: "值班IP管理", leaf: true, qtip: "page/DutyAddress.html", qtitle: '值班IP管理' },
             { text: "水情通讯录", leaf: true, qtip: "page/Communication.html", qtitle: '水情通讯录' }

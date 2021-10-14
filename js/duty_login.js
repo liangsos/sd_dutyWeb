@@ -18,7 +18,32 @@ function btnLogin_Click(){
                 $.session.set("sessionId",_res.data.token);
                 $.session.set("_duty_time_today",_res.data.duty_time_today);
                 $.session.set("_duty_role_db",_res.data.duty_role_db);
-                $.session.set('addvcd',_res.data.user.addvcd);
+                $.session.set('addvcd', _res.data.user.addvcd);
+                
+                //cookie记录
+                $.cookie("userName", _res.data.user.userName, {
+                    expires: 1
+                });
+                $.cookie("realName", _res.data.user.realName, {
+                    expires: 1
+                });
+                $.cookie("roleId", _res.data.user.roleId, {
+                    expires: 1
+                });
+                $.cookie("sessionId", _res.data.token, {
+                    expires: 1
+                });
+                $.cookie("_duty_time_today", _res.data.duty_time_today, {
+                    expires: 1
+                });
+                $.cookie("_duty_role_db", _res.data.duty_role_db, {
+                    expires: 1
+                });
+                $.cookie("addvcd", _res.data.user.addvcd, {
+                    expires: 1
+                });
+
+
                 window.location = '../index.html';
             }else{
                 var message = _res.message;

@@ -1,14 +1,18 @@
 ﻿$(function () {
     //token
-    var token = $.session.get("sessionId");
+    // var token = $.session.get("sessionId");
+    var token = $.cookie('sessionId');
     //addvcd
-    var addvcd = $.session.get("addvcd");
+    // var addvcd = $.session.get("addvcd");
+    var addvcd = $.cookie('addvcd');
     //登陆人员
     var _duty_user_name = $.session.get("userName");
     //值班真实姓名
-    var _duty_name = $.session.get("realName");
+    // var _duty_name = $.session.get("realName");
+    var _duty_name = $.cookie('realName');
     //值班角色
-    var _duty_role = $.session.get("sessionId");
+    // var _duty_role = $.session.get("roleId");
+    var _duty_role = $.cookie('roleId');
     //当天是否有记录
     var _is_have_today = null;
     //交接班标志 1今天不值班 2今天值班未接班(主班) 3今天值班未接班（副班） 4已接班

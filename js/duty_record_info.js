@@ -27,22 +27,6 @@ $(function () {
     var _duty_tel_id = "";
     //来电记录 录音文件名称
     var _duty_tel_audio = "";
-    //当前处理的传真数据源 最大ID
-    var _id_fax_max = "";
-    //待选传真数量
-    var _fax_choose_count = 5;
-    //传真记录当前选中ID
-    var _duty_fax_id = "";
-    //传真记录-文件名称
-    var _duty_fax_file = "";
-    //传真记录-更新人员(用于判断是否为自己添加的记录) 权限：值班人员-收发传真 非值班人员-发传真
-    var _duty_fax_user = "";
-    //传真记录-电话（原始数据）
-    var _duty_fax_tel_item = "";
-    //传真记录-时间（原始数据）
-    var _duty_fax_time_item = "";
-    //传真记录-只有预览权限
-    var _duty_fax_only_watch = "";
     //值班记录 来电记录 传真记录操作权限为：
     //管理员 当天的值班人员 或者最后一次接班的值班人员可以修改当天的记录
     //如：20170401的值班人员可在20170402 08：30时 新增来电记录等（未接班情况下）
@@ -53,24 +37,12 @@ $(function () {
     //值班人员信息
     var tempRecord = "";
 
-
-    //传真待选列表-预览高度
-    var _fax_watch_height_choose = document.documentElement.clientHeight - 320 - 10;
-    //已选传真-预览高度
-    //var _fax_watch_height = document.documentElement.clientWidth <= 1024 ? 200 : (document.documentElement.clientWidth / 1024) * 200;
-    var _fax_watch_height = (document.documentElement.clientHeight - 470) < 200 ? 200 : (document.documentElement.clientHeight - 470);
-    //已选传真-预览宽度
-    var _fax_watch_width = document.documentElement.clientWidth <= 1024 ? (document.documentElement.clientWidth - 50) : 1024;
-    $(".div-fax").css("width", (document.documentElement.clientWidth) + "px");
-    //修改网页标题
     $("title").html(_system_name + $("title").html());
 
     //防汛抗旱工作是否可编辑
     var duty_fxkh_editable = false;
     //来电记录是否可编辑
     var duty_record_tel_editable = false;
-    //传真记录是否可编辑
-    var duty_fax_editable = false;
     
     //获取当前值班人员
     $.ajax({
@@ -172,24 +144,25 @@ $(function () {
 
         //值班记录 来电记录 传真记录操作权限为：
         //管理员 当天的值班人员 或者最后一次接班的值班人员可以修改当天的记录
-        //如：20170401的值班人员可在20170402 08：30时 新增来电记录等（未接班情况下）
-        $.ajax({
-            headers:{
-                "Authorization" : token
-            },
-            type: "get",
-            url: baseUrl + "dutyRecord/getLastDutyUser",
-            data: "time=" + _duty_date,
-            success: function(res){
-                console.log("res:"+res);
-                isLastDutyUser = res.data;
-            },
-            error: function(err){
-                console.error(err);
-            }
-        });
-        console.log("isLastDutyUser:"+isLastDutyUser);
-        //获取防汛抗旱工作
+        //如：20210401的值班人员可在20210402 08：30时 新增来电记录等（未接班情况下）（废除逻辑）
+        //新逻辑改为判断电脑IP，只要是值班电脑IP都能修改
+        // $.ajax({
+        //     headers:{
+        //         "Authorization" : token
+        //     },
+        //     type: "get",
+        //     url: baseUrl + "dutyRecord/getLastDutyUser",
+        //     data: "time=" + _duty_date,
+        //     success: function(res){
+        //         console.log("res:"+res);
+        //         isLastDutyUser = res.data;
+        //     },
+        //     error: function(err){
+        //         console.error(err);
+        //     }
+        // });
+        // console.log("isLastDutyUser:"+isLastDutyUser);
+        // 获取防汛抗旱工作
         $.ajax({
             headers:{
                 "Authorization" : token
@@ -202,18 +175,18 @@ $(function () {
                 //有防汛抗旱情况
                 if (tempFxkh.length > 0) {
                     _duty_fxkh_id = tempFxkh[0]["id"];
-                    $("#txtWaterInfo").val(tempFxkh[0]["waterInfo"]);
+                    // $("#txtWaterInfo").val(tempFxkh[0]["waterInfo"]);
                     $("#txtWaterMain").val(tempFxkh[0]["waterMain"]);
                     $("#txtRainInfo").val(tempFxkh[0]["rainInfo"]);
                     $("#txtRainMain").val(tempFxkh[0]["rainMain"]);
         
                     //工情灾情
-                    $("#txtDisaster").val(tempFxkh[0]["disaster"]);
+                    // $("#txtDisaster").val(tempFxkh[0]["disaster"]);
                     //防汛抗旱行动
-                    $("#txtAction").val(tempFxkh[0]["action"]);
+                    // $("#txtAction").val(tempFxkh[0]["action"]);
                     //防汛会商
-                    $("#txtConsultTitle").val(tempFxkh[0]["consultTitle"]);
-                    $("#txtConsult").val(tempFxkh[0]["consult"]);
+                    // $("#txtConsultTitle").val(tempFxkh[0]["consultTitle"]);
+                    // $("#txtConsult").val(tempFxkh[0]["consult"]);
         
                     //管理员或者当天的值班人员可操作
                     if (_duty_role == "1" || (_duty_time_today == _duty_date && tempRecord.length > 0 && tempRecord[0]["member"].indexOf(_duty_name) > -1) || isLastDutyUser) {
@@ -237,21 +210,21 @@ $(function () {
                     $("#txtWaterInfo,#txtWaterMain,#txtRainInfo,#txtRainMain,#txtDisaster,#txtAction,#txtConsultTitle,#txtConsult").val("");
         
                     //只有管理员可新增 或者 最新的接班人员可新增
-                    if (_duty_role == "1" || isLastDutyUser) {
-                        setDutyEnabled("fxkh", false);
-                        setDutyEnabled("gqzq", false);
-                        setDutyEnabled("fxkhxd", false);
-                        setDutyEnabled("consult", false);
-                        $(".btnWaterInfo,.btnWaterMain,.btnWaterMainHd,.btnRainInfo,.btnRainMain").attr("disabled", false);
-                        duty_fxkh_editable = true;
-                    } else {
-                        setDutyEnabled("fxkh", true);
-                        setDutyEnabled("gqzq", true);
-                        setDutyEnabled("fxkhxd", true);
-                        setDutyEnabled("consult", true);
-                        $(".btnWaterInfo,.btnWaterMain,.btnWaterMainHd,.btnRainInfo,.btnRainMain").attr("disabled", true);
-                        duty_fxkh_editable = false;
-                    }
+                    // if (_duty_role == "1" || isLastDutyUser) {
+                    //     setDutyEnabled("fxkh", false);
+                    //     setDutyEnabled("gqzq", false);
+                    //     setDutyEnabled("fxkhxd", false);
+                    //     setDutyEnabled("consult", false);
+                    //     $(".btnWaterInfo,.btnWaterMain,.btnWaterMainHd,.btnRainInfo,.btnRainMain").attr("disabled", false);
+                    //     duty_fxkh_editable = true;
+                    // } else {
+                    //     setDutyEnabled("fxkh", true);
+                    //     setDutyEnabled("gqzq", true);
+                    //     setDutyEnabled("fxkhxd", true);
+                    //     setDutyEnabled("consult", true);
+                    //     $(".btnWaterInfo,.btnWaterMain,.btnWaterMainHd,.btnRainInfo,.btnRainMain").attr("disabled", true);
+                    //     duty_fxkh_editable = false;
+                    // }
                 }
             },
             error: function(err){
@@ -260,51 +233,22 @@ $(function () {
         });
 
         //管理员和当天的值班人员可编辑
-        if (_duty_role == "1" || (_duty_time_today == _duty_date && tempRecord.length > 0 && tempRecord[0]["member"].indexOf(_duty_name) > -1) || isLastDutyUser) {
-            setDutyEnabled("phone", false);
-            $(".btnAddTel").attr("disabled", false);
-            $(".swfupload").css("display", "block");
-            duty_record_tel_editable = true;
-        } else {
-            setDutyEnabled("phone", true);
-            $(".btnAddTel").attr("disabled", true);
-            $(".swfupload").css("display", "none");
-            duty_record_tel_editable = false;
-        }
+        // if (_duty_role == "1" || (_duty_time_today == _duty_date && tempRecord.length > 0 && tempRecord[0]["member"].indexOf(_duty_name) > -1) || isLastDutyUser) {
+        //     setDutyEnabled("phone", false);
+        //     $(".btnAddTel").attr("disabled", false);
+        //     $(".swfupload").css("display", "block");
+        //     duty_record_tel_editable = true;
+        // } else {
+        //     setDutyEnabled("phone", true);
+        //     $(".btnAddTel").attr("disabled", true);
+        //     $(".swfupload").css("display", "none");
+        //     duty_record_tel_editable = false;
+        // }
         //默认清空
         $("#txtUnits,#txtTelephone,#txtContent").val("");
         //获取来电记录
         initRecordTel(_duty_date);
 
-        //传真记录
-        //管理员或者日期为当天可以编辑
-        if (_duty_role == "1" || (_duty_time_today == _duty_date) || isLastDutyUser) {
-            setDutyEnabled("fax", false);
-            $(".btnAddFaxChoose,.btnAddFax").attr("disabled", false);
-            $("#btnChoose").attr("disabled", false);
-            duty_fax_editable = true;
-
-            //传真记录（非值班人员只能发传真）
-            if (_is_duty != "1" && _duty_role != "1" && !isLastDutyUser) {
-                $("#revTypeFax").val("0");
-                $("#revTypeFax").attr("disabled", true);
-            }
-        } else {
-            setDutyEnabled("fax", true);
-            $(".btnAddFaxChoose,.btnAddFax").attr("disabled", true);
-            $("#btnChoose").attr("disabled", true);
-            duty_fax_editable = false;
-            //清空待选列表
-            $("#fileTableFaxChoose tr:not(:first)").remove();
-        }
-        //获取当天传真记录
-        // initRecordFax(_duty_date);
-        //清空传真记录中的内容
-        $("#txtUnitFax,#txtFileNameFax,#txtSuggestion,#txtContentFax").val("");
-        $("#fileTableFax tr").remove();
-        //清空预览
-        $('.div-fax').empty();
-        $(".div-fax").hide();
     }
 
     /**
@@ -313,25 +257,36 @@ $(function () {
     $(".btnSave").click(function () {
         //保存水雨情
         if ($("#fxkh").hasClass("active")) {
-            console.log("duty_fxkh_editable:" +duty_fxkh_editable);
-            console.log("roleId"+_duty_role);
-            if (!duty_fxkh_editable) {
-                $("#errorRecord").text("无权限修改水雨情！");
-                return;
-            }
+            //废除逻辑，更改为只要是值班电脑IP都能够修改
+            // console.log("duty_fxkh_editable:" +duty_fxkh_editable);
+            // console.log("roleId"+_duty_role);
+            // if (!duty_fxkh_editable) {
+            //     $("#errorRecord").text("无权限修改水雨情！");
+            //     return;
+            // }
 
             //获取最新值
-            var waterInfo = $("#txtWaterInfo").val();
-            var waterMain = $("#txtWaterMain").val();
-            var rainInfo = $("#txtRainInfo").val();
-            var rainMain = $("#txtRainMain").val();
+            // var waterInfo = $("#txtWaterInfo").val();
+            var waterMain = $("#txtWaterMain").val();//水情
+            var rainInfo = $("#txtRainInfo").val(); //雨情
+            var rainMain = $("#txtRainMain").val();//值班概况
             var fxkh = new Object();
             fxkh.id = _duty_fxkh_id;
             fxkh.time = _duty_date;
-            fxkh.waterInfo = waterInfo;
+            // fxkh.waterInfo = waterInfo;
             fxkh.waterMain = waterMain;
-            fxkh.rainInfo = rainInfo;
-            fxkh.rainMain = rainMain;
+            // fxkh.rainInfo = rainInfo;
+            // fxkh.rainMain = rainMain;
+
+            //保存数据时在记录后标注上记录人和记录时间
+            //记录人
+            var dutyUser = _duty_name;
+            //记录时间
+            var notesTime = sysDate();
+            fxkh.rainMain = rainMain + "——记录人:" + dutyUser + ",记录时间:" + notesTime;
+            fxkh.rainInfo = rainInfo + "——记录人:" + dutyUser + ",记录时间:" + notesTime;
+            fxkh.waterMain = waterMain + "——记录人:" + dutyUser + ",记录时间:" + notesTime;
+
             $.ajax({
                 headers:{
                     "Authorization" : token
@@ -357,47 +312,47 @@ $(function () {
         }
 
         //保存工情灾情
-        if ($("#gqzq").hasClass("active")) {
-            if (!duty_fxkh_editable) {
-                $("#errorZq").text("无权限修改工情灾情！");
-                return;
-            }
-            var disaster = $("#txtDisaster").val();
-            var fxkh = new Object();
-            fxkh.id = _duty_fxkh_id;
-            fxkh.time = _duty_date;
-            fxkh.disaster = disaster;
-            fxkh.type = "1";
-            $.ajax({
-                headers:{
-                    "Authorization" : token
-                },
-                type: "post",
-                contentType: "application/json; charset=utf-8",
-                url: baseUrl + "dutyRecord/saveDutyFxkh",
-                data: JSON.stringify(fxkh),
-                success: function(res){
-                    if (res.success) {
-                        $("#errorZq").text("保存工情灾情成功！");
-                        if (_duty_fxkh_id == "")
-                            _duty_fxkh_id = res.data.id;
-                    } else {
-                        $("#errorZq").text("保存工情灾情失败！");
-                        return;
-                    }
-                },
-                error: function(err){
-                    console.error(err);
-                }
-            });
-        }
+        // if ($("#gqzq").hasClass("active")) {
+        //     if (!duty_fxkh_editable) {
+        //         $("#errorZq").text("无权限修改工情灾情！");
+        //         return;
+        //     }
+        //     var disaster = $("#txtDisaster").val();
+        //     var fxkh = new Object();
+        //     fxkh.id = _duty_fxkh_id;
+        //     fxkh.time = _duty_date;
+        //     fxkh.disaster = disaster;
+        //     fxkh.type = "1";
+        //     $.ajax({
+        //         headers:{
+        //             "Authorization" : token
+        //         },
+        //         type: "post",
+        //         contentType: "application/json; charset=utf-8",
+        //         url: baseUrl + "dutyRecord/saveDutyFxkh",
+        //         data: JSON.stringify(fxkh),
+        //         success: function(res){
+        //             if (res.success) {
+        //                 $("#errorZq").text("保存工情灾情成功！");
+        //                 if (_duty_fxkh_id == "")
+        //                     _duty_fxkh_id = res.data.id;
+        //             } else {
+        //                 $("#errorZq").text("保存工情灾情失败！");
+        //                 return;
+        //             }
+        //         },
+        //         error: function(err){
+        //             console.error(err);
+        //         }
+        //     });
+        // }
 
         //保存来电记录
         if ($("#phone").hasClass("active")) {
-            if (!duty_record_tel_editable) {
-                $("#errorTel").text("无权限修改电话记录！");
-                return;
-            }
+            // if (!duty_record_tel_editable) {
+            //     $("#errorTel").text("无权限修改电话记录！");
+            //     return;
+            // }
 
             //获取最新值
             var type = $("#listTypeTel").val();
@@ -458,80 +413,80 @@ $(function () {
         }
 
         //防汛抗旱行动
-        if ($("#fxkhxd").hasClass("active")) {
-            if (!duty_fxkh_editable) {
-                $("#errorFxkhxd").text("无权限修改防汛抗旱行动！");
-                return;
-            }
+        // if ($("#fxkhxd").hasClass("active")) {
+        //     if (!duty_fxkh_editable) {
+        //         $("#errorFxkhxd").text("无权限修改防汛抗旱行动！");
+        //         return;
+        //     }
 
-            var action = $("#txtAction").val();
-            var fxkh = new Object();
-            fxkh.id = _duty_fxkh_id;
-            fxkh.time = _duty_date;
-            fxkh.action = action;
-            fxkh.type = "2";
-            $.ajax({
-                headers:{
-                    "Authorization" : token
-                },
-                type: "post",
-                contentType: "application/json; charset=utf-8",
-                url: baseUrl + "dutyRecord/saveDutyFxkh",
-                data: JSON.stringify(fxkh),
-                success: function(res){
-                    if (res.success) {
-                        $("#errorFxkhxd").text("保存防汛抗旱行动成功！");
-                        if (_duty_fxkh_id == "")
-                            _duty_fxkh_id = res.data.id;
-                    } else {
-                        $("#errorFxkhxd").text("保存防汛抗旱行动失败！");
-                        return;
-                    }
-                },
-                error: function(err){
-                    console.error(err);
-                }
-            });
-        }
+        //     var action = $("#txtAction").val();
+        //     var fxkh = new Object();
+        //     fxkh.id = _duty_fxkh_id;
+        //     fxkh.time = _duty_date;
+        //     fxkh.action = action;
+        //     fxkh.type = "2";
+        //     $.ajax({
+        //         headers:{
+        //             "Authorization" : token
+        //         },
+        //         type: "post",
+        //         contentType: "application/json; charset=utf-8",
+        //         url: baseUrl + "dutyRecord/saveDutyFxkh",
+        //         data: JSON.stringify(fxkh),
+        //         success: function(res){
+        //             if (res.success) {
+        //                 $("#errorFxkhxd").text("保存防汛抗旱行动成功！");
+        //                 if (_duty_fxkh_id == "")
+        //                     _duty_fxkh_id = res.data.id;
+        //             } else {
+        //                 $("#errorFxkhxd").text("保存防汛抗旱行动失败！");
+        //                 return;
+        //             }
+        //         },
+        //         error: function(err){
+        //             console.error(err);
+        //         }
+        //     });
+        // }
 
         //保存防汛会商
-        if ($("#consult").hasClass("active")) {
-            if (!duty_fxkh_editable) {
-                $("#errorConsult").text("无权限修改防汛会商！");
-                return;
-            }
-            var consultTitle = $("#txtConsultTitle").val();
-            var consult = $("#txtConsult").val();
-            var data = [{ id: _duty_fxkh_id, time: _duty_date, consultTitle: consultTitle, consult: consult, type: "3" }];
-            var fxkh = new Object();
-            fxkh.id = _duty_fxkh_id;
-            fxkh.time = _duty_date;
-            fxkh.consultTitle = consultTitle;
-            fxkh.consult = consult;
-            fxkh.type = "3";
-            $.ajax({
-                headers:{
-                    "Authorization" : token
-                },
-                type: "post",
-                contentType: "application/json; charset=utf-8",
-                url: baseUrl + "dutyRecord/saveDutyFxkh",
-                data: JSON.stringify(fxkh),
-                success: function(res){
-                    if (res.success) {
-                        $("#errorConsult").text("保存防汛会商成功！");
-                        if (_duty_fxkh_id == "")
-                            _duty_fxkh_id = res.data.id;
-                    } else {
-                        $("#errorConsult").text("保存防汛会商失败！");
-                            return;
-                    }
-                },
-                error: function(err){
-                    console.error(err);
-                }
-            });
-        }
+        // if ($("#consult").hasClass("active")) {
+        //     if (!duty_fxkh_editable) {
+        //         $("#errorConsult").text("无权限修改防汛会商！");
+        //         return;
+        //     }
+        //     var consultTitle = $("#txtConsultTitle").val();
+        //     var consult = $("#txtConsult").val();
+        //     var data = [{ id: _duty_fxkh_id, time: _duty_date, consultTitle: consultTitle, consult: consult, type: "3" }];
+        //     var fxkh = new Object();
+        //     fxkh.id = _duty_fxkh_id;
+        //     fxkh.time = _duty_date;
+        //     fxkh.consultTitle = consultTitle;
+        //     fxkh.consult = consult;
+        //     fxkh.type = "3";
+        //     $.ajax({
+        //         headers:{
+        //             "Authorization" : token
+        //         },
+        //         type: "post",
+        //         contentType: "application/json; charset=utf-8",
+        //         url: baseUrl + "dutyRecord/saveDutyFxkh",
+        //         data: JSON.stringify(fxkh),
+        //         success: function(res){
+        //             if (res.success) {
+        //                 $("#errorConsult").text("保存防汛会商成功！");
+        //                 if (_duty_fxkh_id == "")
+        //                     _duty_fxkh_id = res.data.id;
+        //             } else {
+        //                 $("#errorConsult").text("保存防汛会商失败！");
+        //                     return;
+        //             }
+        //         },
+        //         error: function(err){
+        //             console.error(err);
+        //         }
+        //     });
+        // }
     });
 
     /**
@@ -545,29 +500,48 @@ $(function () {
     /**
      * 最新水情
      **/
-    $(".btnWaterInfo").click(function () {
-        var info = post_webservice_json("{'time':'" + _duty_date + "'}", "DutyRecordInfo.aspx/getWaterInfoNew");
-        var arrInfo = info.split('#');
-        if (arrInfo[0] == "0") {
-            $("#errorRecord").text("获取最新水情成功！");
-            $("#txtWaterInfo").val(arrInfo[1]);
-        } else {
-            $("#errorRecord").text(arrInfo[1]);
-            return;
-        }
-    });
+    // $(".btnWaterInfo").click(function () {
+    //     var info = post_webservice_json("{'time':'" + _duty_date + "'}", "DutyRecordInfo.aspx/getWaterInfoNew");
+    //     var arrInfo = info.split('#');
+    //     if (arrInfo[0] == "0") {
+    //         $("#errorRecord").text("获取最新水情成功！");
+    //         $("#txtWaterInfo").val(arrInfo[1]);
+    //     } else {
+    //         $("#errorRecord").text(arrInfo[1]);
+    //         return;
+    //     }
+    // });
 
     /**
      * 最新雨情
      **/
     $(".btnRainInfo").click(function () {
+        //系统当前时间
+        var myDate = new Date;
+        var year = myDate.getFullYear(); //获取当前年
+        var mon = (myDate.getMonth() + 1) < 10 ? "0" + (myDate.getMonth() + 1) : (myDate.getMonth() + 1); //获取当前月份的日期，不足10补0
+        var date = myDate.getDate() < 10 ? "0" + myDate.getDate() : myDate.getDate(); //获取当前日
+        var h = myDate.getHours();//获取当前小时数(0-23)
+        var eTime = year + "-" + mon + "-" + date + " " + h + ":00";
+
+        //前一日时间
+        var dd = new Date;
+        dd.setDate(dd.getDate() - 1);
+        var y = dd.getFullYear();
+        var m = (dd.getMonth() + 1) < 10 ? "0" + (dd.getMonth() + 1) : (dd.getMonth() + 1); //获取当前月份的日期，不足10补0
+        var d = dd.getDate() < 10 ? "0" + dd.getDate() : dd.getDate(); //获取当前几号，不足10补0
+        var bTime = y + "-" + m + "-" + d + " 08:00";
+
         var objData = {
-            time: _duty_date
+            Btime: bTime,
+            Etime: eTime,
+            yljb: "10,25,50,100,250,400",
+            frgrd:"1,2,3,4"
         }
         var params_info = JSON.stringify(objData);
         //查询数据
         $.ajax({
-            url: rainUrl,
+            url: rainUrl + "get_YL_Fbt_Sj",
             data: params_info,
             type: "post",
             contentType: "application/json; charset=utf-8",
@@ -575,11 +549,18 @@ $(function () {
                 if(_res.code == 1){
                     $("#errorRecord").text("获取最新雨情成功！");
                 }
-                var data = _res.data;
                 var waterHtml = "";
-                for(i=0;i<data.length;i++){
-                    waterHtml += "站名：" + data[i].stnm  + "  雨量:" + data[i].rain + "mm" + ";  "
-                }
+                var dataArr = _res.areaRain.split('|');
+                $.each(dataArr, function (index, item) {
+                    var itemArr = item.split(',');
+                    waterHtml += itemArr[0] + ":" + itemArr[2] + "  ";
+                })
+                //数据处理
+
+                // var waterHtml = "";
+                // for(i=0;i<data.length;i++){
+                //     waterHtml += "站名：" + data[i].stnm  + "  雨量:" + data[i].rain + "mm" + ";  "
+                // }
                 $("#txtRainInfo").val($("#txtRainInfo").val() + waterHtml);
                 // $("#modalWaterMain").modal("hide");
             }
@@ -767,46 +748,46 @@ $(function () {
     /**
      * 主要站点雨情
      **/
-    $(".btnRainMain").click(function () {
-        //设置日期默认值
-        $("#txtRainDate").val(addDays(_duty_date, -1) + " 08:00");
-        $("#txtRainDate2").val(_duty_date + " 08:00");
-        $('.date-rain').datetimepicker('update');
+    // $(".btnRainMain").click(function () {
+    //     //设置日期默认值
+    //     $("#txtRainDate").val(addDays(_duty_date, -1) + " 08:00");
+    //     $("#txtRainDate2").val(_duty_date + " 08:00");
+    //     $('.date-rain').datetimepicker('update');
 
-        //弹出modal框
-        $("#modalRainMain").modal({ backdrop: 'static', keyboard: false, show: true });
-    });
+    //     //弹出modal框
+    //     $("#modalRainMain").modal({ backdrop: 'static', keyboard: false, show: true });
+    // });
 
     /**
      * 主要雨情查询
      **/
-    $(".btnSearchRain").click(function () {
-        $("#errorRain").text("");
-        //校验是否选择站点
-        if ($("#ulYesRain li").length == 0) {
-            $("#errorRain").text("请先选择站点！");
-            return;
-        }
+    // $(".btnSearchRain").click(function () {
+    //     $("#errorRain").text("");
+    //     //校验是否选择站点
+    //     if ($("#ulYesRain li").length == 0) {
+    //         $("#errorRain").text("请先选择站点！");
+    //         return;
+    //     }
 
-        var beginTime = $("#txtRainDate").val();
-        var endTime = $("#txtRainDate2").val();
-        //拼接站点
-        var stcds = "";
-        $("#ulYesRain li").each(function (index, element) {
-            stcds += $(this).attr("_stcd") + ",";
-        });
-        stcds = stcds.substr(0, stcds.length - 1);
+    //     var beginTime = $("#txtRainDate").val();
+    //     var endTime = $("#txtRainDate2").val();
+    //     //拼接站点
+    //     var stcds = "";
+    //     $("#ulYesRain li").each(function (index, element) {
+    //         stcds += $(this).attr("_stcd") + ",";
+    //     });
+    //     stcds = stcds.substr(0, stcds.length - 1);
 
-        //查询数据
-        var strRes = post_webservice_json("{'stcds':'" + stcds + "','beginTime':'" + beginTime + "','endTime':'" + endTime + "'}", "DutyRecordInfo.aspx/getRainMain");
-        var arr = strRes.split('#');
-        if (arr[1] == "") {
-            $("#txtRainMain").val($("#txtRainMain").val() + arr[0]);
-            $("#modalRainMain").modal("hide");
-        } else {
-            $("#errorRain").text(arr[1]);
-        }
-    });
+    //     //查询数据
+    //     var strRes = post_webservice_json("{'stcds':'" + stcds + "','beginTime':'" + beginTime + "','endTime':'" + endTime + "'}", "DutyRecordInfo.aspx/getRainMain");
+    //     var arr = strRes.split('#');
+    //     if (arr[1] == "") {
+    //         $("#txtRainMain").val($("#txtRainMain").val() + arr[0]);
+    //         $("#modalRainMain").modal("hide");
+    //     } else {
+    //         $("#errorRain").text(arr[1]);
+    //     }
+    // });
 
     ////////////////////////////////////////////////电话记录/////////////////////////////////////////////////
     /**
@@ -899,27 +880,6 @@ $(function () {
                 }
             } else {
                 alert("来单记录删除失败！");
-                return;
-            }
-        } else if (_del_type == "fax") {
-            var res = post_webservice_json("{'id':'" + _duty_fax_id_del + "','type':''}", "DutyFile.aspx/delDutyFax");
-            if (res) {
-                //关闭model
-                $("#modalDel").modal("hide");
-                //刷新列表
-                // initRecordFax(_duty_date);
-                //若删除的ID为当前编辑的 清空
-                if (_duty_fax_id_del == _duty_fax_id) {
-                    $(".btnAddFax").click();
-                }
-                //获取最新的传真
-                // if (_is_duty == "1") {
-                //     reloadFax();
-                // } else {
-                //     reloadFax_2()
-                // }
-            } else {
-                alert("传真记录删除失败！");
                 return;
             }
         }
@@ -1031,469 +991,109 @@ $(function () {
     ////////////////////////////////////////////////电话记录/////////////////////////////////////////////////
 
     ////////////////////////////////////////////////传真记录/////////////////////////////////////////////////
-    /**
-     * 传真记录列表初始化
-     **/
-    // function initRecordFax(time) {
-    //     var tempFax = jQuery.parseJSON(post_webservice_json("{'time':'" + time + "'}", "DutyRecordInfo.aspx/getDutyFaxPaperByTime"));
-    //     $("#tableFax tr:not(:first)").remove();
-    //     var _fax = "";
-    //     $.each(tempFax, function (index, obj) {
-    //         _fax += "<tr><td>" + (obj["isRev"] == "0" ? "发传真" : "收传真") + "</td><td>" + (obj["itemTime"] == "" ? "" : $.format.date(new Date(Date.parse(obj["itemTime"].replace(/-/g, "/"))), "HH时mm分")) + "</td>";
-    //         _fax += "<td title='" + $.trim(obj["units"]) + "'>" + $.trim(obj["units"]) + "</td><td>" + $.trim(obj["itemTel"]) + "</td>";
-    //         _fax += "<td title='" + $.trim(obj["fileName"]) + "'>" + $.trim(obj["fileName"]) + "</td>";
-    //         _fax += "<td title='" + $.trim(obj["content"]) + "'>" + $.trim(obj["content"]) + "</td>";
-    //         _fax += "<td>" + obj["realName"] + "</td><td>";
-    //         if (_duty_role=="1" ||(duty_fax_editable && _duty_user_name == obj["updateUser"])) {
-    //             _fax += "<button class='btn btn-default btnEdit' type='button' _id='" + obj["id"] + "'>编辑</button>";
-    //             _fax += "&nbsp;<button class='btn btn-default btnDel' type='button' _id='" + obj["id"] + "'>删除</button>";
-    //         } else {
-    //             _fax += "<button class='btn btn-default btnWatch' type='button' _id='" + obj["id"] + "'>详细</button>";
-    //         }
-    //         _fax += "</td></tr>";
-    //     });
-    //     $("#tableFax").append(_fax);
-    // }
-
-    /**
-     * 传真记录编辑按钮
-     **/
-    $("#tableFax").delegate(".btnEdit,.btnWatch", "click", function () {
-        if ($(this).hasClass("btnWatch")) {
-            _duty_fax_only_watch = "1";
-            $(".btnAddFaxChoose").attr("disabled", true);
-            $("#btnChoose").attr("disabled", true);
-        } else {
-            _duty_fax_only_watch = "";
-            $(".btnAddFaxChoose").attr("disabled", false);
-            $("#btnChoose").attr("disabled", false);
-        }
-
-        _duty_fax_id = $(this).attr("_id");
-        //根据ID获取传真记录
-        var col = jQuery.parseJSON(post_webservice_json("{'id':'" + _duty_fax_id + "'}", "DutyFile.aspx/getDutyFaxById"));
-        if (col.length < 1) {
-            alert("获取传真记录失败！");
-            return;
-        }
-
-        //赋值
-        $("#revTypeFax").val(col[0]["isRev"]);
-        $("#txtUnitFax").val(col[0]["units"]);
-        $("#txtRefNoFax").val(col[0]["refNo"]);
-        $("#txtFileNameFax").val(col[0]["fileName"]);
-        $("#txtSuggestion").val(col[0]["suggestion"]);
-        $("#txtContentFax").val(col[0]["content"]);
-        _duty_fax_file = col[0]["tiffName"];
-        _duty_fax_tel_item = col[0]["itemTel"];
-        _duty_fax_time_item = col[0]["itemTime"];
-        if (_duty_fax_only_watch == "1") {
-            $("#txtUnitFax,#txtRefNoFax,#txtFileNameFax,#txtSuggestion,#txtContentFax").attr("readonly", true);
-            $("#revTypeFax").attr("disabled", true);
-        } else {
-            $("#txtUnitFax,#txtRefNoFax,#txtFileNameFax,#txtSuggestion,#txtContentFax").attr("readonly", false);
-            if (_is_duty != "1" && _duty_role != "1" && !isLastDutyUser) {
-                $("#revTypeFax").attr("disabled", true);
-            } else {
-                $("#revTypeFax").attr("disabled", false);
-            }
-        }
-
-        //清空预览
-        $('.div-fax').empty();
-        $(".div-fax").hide();
-
-        //初始化已选传真
-        updTableFax(col[0]["tiffName"], "0");
-    });
-
-    var _duty_fax_id_del = "";
-    /**
-     * 传真记录删除按钮
-     **/
-    $("#tableFax").delegate(".btnDel", "click", function () {
-        //清空预览
-        $('.div-fax').empty();
-        $(".div-fax").hide();
-
-        _duty_fax_id_del = $(this).attr("_id");
-        _del_type = "fax";
-        $("#labDel").text("确定删除该传真记录？");
-        $("#modalDel").modal({ backdrop: 'static', keyboard: false, show: true });
-    });
-
-    /**
-    * 添加传真按钮事件
-    **/
-    $(".btnAddFaxChoose").click(function () {
-        //初始化待选传真列表
-        initTableFaxChoose();
-        //清空预览
-        $('.div-fax2').empty();
-        $(".div-fax").hide();
-
-        $('.div-fax').empty();
-        $(".div-fax").hide();
-
-        $("#modalFaxChoose").modal({ backdrop: 'static', keyboard: false, show: true });
-    });
-
-    /**
-    * 收发类型列表改变事件
-    **/
-    $("#revTypeFax").change(function () {
-        //已选列表清空
-        $("#fileTableFax tr").remove();
-        _duty_fax_tel_item = "";
-        _duty_fax_time_item = "";
-        _duty_fax_file = "";
-    });
-
-    /**
-    * 待选传真-查询按钮
-    **/
-    $(".btnSearchFaxChoose").click(function () {
-        initTableFaxChoose();
-    });
-
-    /**
-    * 已选传真列表-删除按钮
-    **/
-    $('#fileTableFax').delegate('.btn-del', 'click', function () {
-        if (!duty_fax_editable)
-            return;
-
-        var file = $(this).attr("_file");
-        //删除该行
-        $(this).parent().parent().remove();
-
-        //删除文档中的
-        _duty_fax_file = delStrFiles(_duty_fax_file, file);
-        if (_duty_fax_file == "") {
-            _duty_fax_tel_item = "";
-            _duty_fax_time_item = "";
-        }
-        //删除服务器文档
-        var res = post_webservice_json("{'type':'fax','id':'" + _duty_fax_id + "','file':'" + file + "'}", "DutyFile.aspx/delDutyFile");
-        if (res) {
-            //刷新待选列表
-            initTableFaxChoose();
-            //清空预览-较小的
-            $('.div-fax').empty();
-            $(".div-fax").hide();
-        } else {
-            $("#errorRecord").text("删除已选传真失败！");
-            return;
-        }
-    });
-
-    /**
-    * 传真-预览(待选列表)
-    **/
-    $('#fileTableFaxChoose').delegate('.btn-watch', 'click', function () {
-        var path = $(this).attr("_path") + "/" + $(this).attr("_file");
-
-        //使用alternatiff插件方式 必须在值班电脑上安装
-        path = "../Uploads/fax/FAX_TIF/" + path;
-        //判断文件是否存在
-        var isExist = post_webservice_json("{'path':'" + path + "'}", "DutyFile.aspx/getFileExist");
-        if (isExist) {
-            $('.div-fax2').empty();
-            $('.div-fax2').append(getFaxTiff(path, 898, _fax_watch_height_choose));
-            $(".div-fax2").show();
-        }
-        else {
-            alert("文件不存在！");
-        }
-    });
-
-    /**
-    * 传真-预览(已选列表)
-    **/
-    $('#fileTableFax').delegate('.btn-watch', 'click', function () {
-        var path = $(this).attr("_file");
-
-        //使用alternatiff插件方式 必须在值班电脑上安装
-        path = "../Uploads/fax/FAX_TIF/" + path;
-        //判断文件是否存在
-        var isExist = post_webservice_json("{'path':'" + path + "'}", "DutyFile.aspx/getFileExist");
-        if (isExist) {
-            $('.div-fax').empty();
-            $('.div-fax').append(getFaxTiff(path, _fax_watch_width, _fax_watch_height));
-            $(".div-fax").show();
-        }
-        else {
-            alert("文件不存在！");
-        }
-    });
-
-    /**
-    * 待选传真-添加
-    **/
-    $('#fileTableFaxChoose').delegate('.btn-add', 'click', function () {
-        var file = $(this).attr("_file");
-        var path = $(this).attr("_path");
-
-        //添加字符串
-        if (_duty_fax_file != "") {
-            _duty_fax_file += ";";
-        }
-        _duty_fax_file += path + "/" + file;
-
-        //电话 时间 保留第一个
-        if (_duty_fax_tel_item == "") {
-            _duty_fax_tel_item = $(this).attr("_tel");
-        }
-        if (_duty_fax_time_item == "") {
-            _duty_fax_time_item = $(this).attr("_time");
-        }
-        //待选列表删除
-        $(this).parent().parent().remove();
-
-        //已选传真列表添加
-        updTableFax(path + "/" + file, "1");
-
-        //关闭modal
-        $("#modalFaxChoose").modal("hide");
-
-        //已选传真-添加预览
-        $('.div-fax').empty();
-        $('.div-fax').append(getFaxTiff("../Uploads/fax/FAX_TIF/" + path + "/" + file, _fax_watch_width, _fax_watch_height));
-        $(".div-fax").show();
-    });
-
-    /**
-     * 待选传真-删除
-     **/
-    $('#fileTableFaxChoose').delegate('.btn-del', 'click', function () {
-        //待选列表删除
-        $(this).parent().parent().remove();
-
-        //待选传真表 更新标志
-        var _id = $(this).attr("_id");
-        var res = post_webservice_json("{'id':'" + _id + "','flag':'2'}", "DutyFile.aspx/updDutyItemFax");
-        if (!res) {
-            alert("删除待选传真失败！");
-        } else {
-            //清空预览
-            $('.div-fax2').empty();
-            $(".div-fax2").hide();
-            //获取最新的传真
-            // if (_is_duty == "1") {
-            //     reloadFax();
-            // } else {
-            //     reloadFax_2()
-            // }
-            //刷新列表
-            initTableFaxChoose();
-        }
-    });
-
-    /**
-     * 传真记录-新增按钮
-     **/
-    $(".btnAddFax").click(function () {
-        $("#errorFax").text("");
-        _duty_fax_id = "";
-        _duty_fax_file = "";
-        _duty_fax_tel_item = "";
-        _duty_fax_time_item = "";
-        _duty_fax_only_watch = "";
-
-        //添加传真 按钮可用
-        $(".btnAddFaxChoose").attr("disabled", false);
-        $("#btnChoose").attr("disabled", false);
-
-        $("#fileTableFax tr").remove();
-        if (_is_duty == "1" || _duty_role == "1") {
-            $("#revTypeFax").val("1");
-        }
-        $("#txtUnitFax,#txtContentFax,#txtRefNoFax,#txtFileNameFax,#txtSuggestion").val("");
-        $("#txtUnitFax,#txtContentFax,#txtRefNoFax,#txtFileNameFax,#txtSuggestion").attr("readonly", false);
-        if (_is_duty != "1" && _duty_role != "1" && !isLastDutyUser) {
-            $("#revTypeFax").attr("disabled", true);
-            $("#revTypeFax").val("0");
-        } else {
-            $("#revTypeFax").attr("disabled", false);
-        }
-
-        //清空预览
-        $('.div-fax').empty();
-        $(".div-fax").hide();
-    });
-
-    /**
-    * 初始化待选传真列表
-    **/
-    function initTableFaxChoose() {
-        //先删除
-        $("#fileTableFaxChoose tr:not(:first)").remove();
-        //获取最新列表
-        var colChoose = jQuery.parseJSON(post_webservice_json("{'type':'" + $("#revTypeFax").val() + "','beginTime':'" + $("#txtBeginTimeFax").val() + "','endTime':'" + $("#txtEndTimeFax").val() + "','max':'" + _fax_choose_count + "'}", "DutyFile.aspx/getDutyItemFax"));
-        $.each(colChoose, function (index, obj) {
-            //已选传真列表中存在 则不添加
-            var isExist = false;
-            $("#fileTableFax tr").each(function (i, e) {
-                if ($(this).children("td").eq(0).text().indexOf(obj["File_Name"]) > -1) {
-                    isExist = true;
-                    return false;
-                }
-            });
-            if (isExist)
-                return true;
-
-            var temp = "<tr><td style='" + (obj["ID"] > _id_fax_max ? "color:red" : "") + "'>" + $.format.date(new Date(Date.parse(obj["DateReady"].replace(/-/g, "/"))), "yyyy-MM-dd HH:mm") + "</td>";
-            temp += "<td style='" + (obj["ID"] > _id_fax_max ? "color:red" : "") + "'>" + obj["TelNames"] + "</td>";
-            temp += "<td style='" + (obj["ID"] > _id_fax_max ? "color:red" : "") + "'>" + obj["File_Name"] + "</td>";
-            temp += "<td><button class='btn btn-default btn-watch' _file='" + obj["File_Name"] + "' _path='" + obj["Path_Name"] + "'><span class='fa fa-file-image-o'></span>&nbsp;预览</button>";
-            temp += "<button class='btn btn-default btn-add' _file='" + obj["File_Name"] + "' _path='" + obj["Path_Name"] + "' _tel='" + obj["TelNames"] + "' _time='" + obj["DateReady"] + "'><span class='fa fa-plus'></span>&nbsp;添加</button>";
-            temp += "<button class='btn btn-default btn-del' _id='" + obj["ID"] + "'><span class='fa fa-trash-o'></span>&nbsp;删除</button></td></tr>";
-            $("#fileTableFaxChoose").append(temp);
-        });
-    }
-
-    /**
-    * 已选传真列表
-    * type说明 0初始化 1直接添加 2删除(指定文件名称)
-    **/
-    function updTableFax(strFiles, type) {
-        if (type != "0" && strFiles == "")
-            return;
-
-        switch (type) {
-            case "0":
-                //先删除
-                $("#fileTableFax tr").remove();
-                var files = strFiles.split(";");
-                for (var i = 0; i < files.length; i++) {
-                    if (files[i] == "")
-                        continue;
-
-                    var temp = "<tr><td class='td-name'>" + files[i].substr(7) + "</td>";
-                    temp += "<td><button class='btn btn-default btn-watch' _file='" + files[i] + "'><span class='fa fa-file-image-o'></span>&nbsp;&nbsp;预览</button></td>";
-                    temp += "<td><button class='btn btn-default btn-del' _file='" + files[i] + "' " + (_duty_fax_only_watch == "1" ? 'disabled="true"' : "") + "><span class='fa fa-trash-o'></span>&nbsp;&nbsp;删除</button></td></tr>";
-                    $("#fileTableFax").append(temp);
-                }
-                break;
-            case "1":
-                var temp = "<tr><td class='td-name'>" + strFiles.substr(7) + "</td>";
-                temp += "<td><button class='btn btn-default btn-watch' _file='" + strFiles + "'><span class='fa fa-file-image-o'></span>&nbsp;&nbsp;预览</button></td>";
-                temp += "<td><button class='btn btn-default btn-del' _file='" + strFiles + "'><span class='fa fa-trash-o'></span>&nbsp;&nbsp;删除</button></td></tr>";
-                $("#fileTableFax").append(temp);
-                break;
-            case "2":
-                //遍历现有表格删除
-                $("#fileTableFax tr").each(function (index, element) {
-                    if ($(this).eq(0).text() == strFiles) {
-                        $(this).remove();
-                        return true;
-                    }
-                });
-        }
-    }
 
     ///////////来文单位相关 add by hzx 2018-07-12
     //来文单位数据源
-    var arrFileOrgan = new Array();
-    /**
-     * 选择按钮
-     **/
-    $("#btnChoose").click(function () {
-        //弹出modal框
-        $("#modalFileOrgan").modal({ backdrop: 'static', keyboard: false, show: true });
-    });    
+    // var arrFileOrgan = new Array();
+    // /**
+    //  * 选择按钮
+    //  **/
+    // $("#btnChoose").click(function () {
+    //     //弹出modal框
+    //     $("#modalFileOrgan").modal({ backdrop: 'static', keyboard: false, show: true });
+    // });    
     /**
      * 初始化列表
      **/
-    function initFileOrgan() {
-        $("#ulOrgan li").remove();
-        $("#ulOrganAbbr li").remove();
-        arrFileOrgan = new Array();
-        $.ajax({
-            headers:{
-                "Authorization" : token
-            },
-            type: "get",
-            dataType: "json",
-            url: baseUrl + "dutyRecord/getDutyFileOrganAll",
-            success: function(res){
-                var temp = "";
-                $.each(res.data, function (index, obj) {
-                    temp += "<li _abbr='" + obj["abbr"] + "'>" + obj["name"] + "</li>";
-                    arrFileOrgan.push(obj);
-                });
-                $("#ulOrgan").append(temp);
-            },
-            error: function(err){
-                console.error(err);
-            }
-        });
-    }
+    // function initFileOrgan() {
+    //     $("#ulOrgan li").remove();
+    //     $("#ulOrganAbbr li").remove();
+    //     arrFileOrgan = new Array();
+    //     $.ajax({
+    //         headers:{
+    //             "Authorization" : token
+    //         },
+    //         type: "get",
+    //         dataType: "json",
+    //         url: baseUrl + "dutyRecord/getDutyFileOrganAll",
+    //         success: function(res){
+    //             var temp = "";
+    //             $.each(res.data, function (index, obj) {
+    //                 temp += "<li _abbr='" + obj["abbr"] + "'>" + obj["name"] + "</li>";
+    //                 arrFileOrgan.push(obj);
+    //             });
+    //             $("#ulOrgan").append(temp);
+    //         },
+    //         error: function(err){
+    //             console.error(err);
+    //         }
+    //     });
+    // }
     //初始化列表
-    initFileOrgan();
+    // initFileOrgan();
 
     /**
      * 来文单位 单击事件
      **/
-    $("#ulOrgan").delegate("li", "click", function () {
-        var abbr = $(this).attr("_abbr");
+    // $("#ulOrgan").delegate("li", "click", function () {
+    //     var abbr = $(this).attr("_abbr");
         
-        //添加文号列表
-        $("#ulOrganAbbr li").remove();
-        var arr = abbr.split(";");
-        var temp = "";
-        for (var i = 0; i < arr.length;i++)
-        {
-            if (arr[i] == "")
-                continue;
+    //     //添加文号列表
+    //     $("#ulOrganAbbr li").remove();
+    //     var arr = abbr.split(";");
+    //     var temp = "";
+    //     for (var i = 0; i < arr.length;i++)
+    //     {
+    //         if (arr[i] == "")
+    //             continue;
 
-            temp += "<li>" + arr[i] + "</li>";
-        }
-        $("#ulOrganAbbr").append(temp);
+    //         temp += "<li>" + arr[i] + "</li>";
+    //     }
+    //     $("#ulOrganAbbr").append(temp);
 
-        //选中状态切换
-        $("#ulOrgan li").removeClass("active");
-        $(this).addClass("active");
+    //     //选中状态切换
+    //     $("#ulOrgan li").removeClass("active");
+    //     $(this).addClass("active");
 
-        //若文号只有一个-默认选中
-        if (arr.length == 1) {
-            $("#ulOrganAbbr li").addClass("active");
-        }
-    });
+    //     //若文号只有一个-默认选中
+    //     if (arr.length == 1) {
+    //         $("#ulOrganAbbr li").addClass("active");
+    //     }
+    // });
 
     /**
      * 文号 单击事件
      **/
-    $("#ulOrganAbbr").delegate("li", "click", function () {
-        $("#ulOrganAbbr li").removeClass("active");
-        $(this).addClass("active");
-    });
+    // $("#ulOrganAbbr").delegate("li", "click", function () {
+    //     $("#ulOrganAbbr li").removeClass("active");
+    //     $(this).addClass("active");
+    // });
 
     /**
      * 来文单位-确定按钮
      **/
-    $(".btnSureFileOrgan").click(function () {
-        $("#errorFileOrgan").text("");
+    // $(".btnSureFileOrgan").click(function () {
+    //     $("#errorFileOrgan").text("");
 
-        //校验是否选中 来文单位+文号
-        var _name = $("#ulOrgan li.active").text();
-        var _abbr = $("#ulOrganAbbr li.active").text();
-        if (_name == null || _name == "" || _name == undefined) {
-            $("#errorFileOrgan").text("请先选择来文单位！");
-            return;
-        }
-        if (_abbr == null || _abbr == "" || _abbr == undefined) {
-            $("#errorFileOrgan").text("请先选择文号！");
-            return;
-        }
+    //     //校验是否选中 来文单位+文号
+    //     var _name = $("#ulOrgan li.active").text();
+    //     var _abbr = $("#ulOrganAbbr li.active").text();
+    //     if (_name == null || _name == "" || _name == undefined) {
+    //         $("#errorFileOrgan").text("请先选择来文单位！");
+    //         return;
+    //     }
+    //     if (_abbr == null || _abbr == "" || _abbr == undefined) {
+    //         $("#errorFileOrgan").text("请先选择文号！");
+    //         return;
+    //     }
 
-        //赋值
-        $("#txtUnitFax").val(_name);
-        $("#txtRefNoFax").val(_abbr + "【" + new Date().getFullYear() + "】");
+    //     //赋值
+    //     $("#txtUnitFax").val(_name);
+    //     $("#txtRefNoFax").val(_abbr + "【" + new Date().getFullYear() + "】");
 
-        //隐藏model
-        $("#modalFileOrgan").modal("hide");
-    });
+    //     //隐藏model
+    //     $("#modalFileOrgan").modal("hide");
+    // });
     ////////////////////////////////////////////////传真记录/////////////////////////////////////////////////
 
     /**
@@ -1879,9 +1479,9 @@ $(function () {
     //     });
     // }
 
-    $("#btnFaxMsgClose,.fax-tip .close").click(function () {
-        $(".fax-tip").slideUp(1000);
-    });
+    // $("#btnFaxMsgClose,.fax-tip .close").click(function () {
+    //     $(".fax-tip").slideUp(1000);
+    // });
 });
 
 Date.prototype.Format = function (fmt) {
@@ -1905,6 +1505,19 @@ function addDate(date,days){
     d.setDate(d.getDate()+days); 
     var m=d.getMonth()+1; 
     return d.getFullYear()+'-'+m+'-'+d.getDate() + " 08:00:00"; 
-  }
+}
+
+/**
+ * 系统当前时间
+ */
+function sysDate() {
+    var myDate = new Date;
+    var year = myDate.getFullYear(); //获取当前年
+    var mon = (myDate.getMonth() + 1) < 10 ? "0" + (myDate.getMonth() + 1) : (myDate.getMonth() + 1); //获取当前月份的日期，不足10补0
+    var date = myDate.getDate() < 10 ? "0" + myDate.getDate() : myDate.getDate(); //获取当前日
+    var h = myDate.getHours();//获取当前小时数(0-23)
+    var m = myDate.getMinutes
+    return sysTime = year + "-" + mon + "-" + date + " " + h + ":00";
+}
  
  

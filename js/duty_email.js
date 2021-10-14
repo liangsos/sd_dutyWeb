@@ -1,6 +1,7 @@
 $(function () {
     //token
-    var token = sessionStorage.getItem("sessionId");
+    // var token = sessionStorage.getItem("sessionId");
+    var token = $.cookie('sessionId');
     //登陆人员
     var _duty_user_name = sessionStorage.getItem("userName");
     var _duty_name = sessionStorage.getItem("realName");

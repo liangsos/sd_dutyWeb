@@ -1,6 +1,10 @@
 $(function () {
     //token
-    var token = $.session.get("sessionId");
+    // var token = $.session.get("sessionId");
+    var token = $.cookie('sessionId');
+
+    //从cookie中获取sessionId
+    
 
     var table = null;
     table = $('#commTable').dataTable({

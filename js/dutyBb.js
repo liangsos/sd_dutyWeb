@@ -4,9 +4,11 @@ $(function () {
     //登陆人员用户名
     var _duty_user_name = $.session.get("userName");
     //登录人角色
-    var _duty_role = $.session.get("roleId");
+    // var _duty_role = $.session.get("roleId");
+    var _duty_role = $.cookie('roleId');
     //token
-    var token = $.session.get("sessionId");
+    // var token = $.session.get("sessionId");
+    var token = $.cookie('sessionId');
     //登陆人姓名
     var _duty_name = $.session.get("realName");
     //获取当前值班人员
