@@ -1346,4 +1346,6 @@ function downloadFile(e){
     form.attr("action",url);
     $("body").append(form);
     form.submit();//表单提交
+
+    // window.location.href = url;
 }

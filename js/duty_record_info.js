@@ -120,7 +120,8 @@ $(function () {
             success: function(res){
                 tempRecord = res.data;
                 if (tempRecord.length > 0) {
-                    $(".record-title").append("<label class='title-label-bold'>日期：</label><label class='title-label'>" + _duty_date + "</label><label class='title-label-bold-left'>局领导：</label><label class='title-label'>" + tempRecord[0]["leaderComm"] + "</label><label class='title-label-bold-left'>带班：</label><label class='title-label'>" + tempRecord[0]["leader"] + "</label><label class='title-label-bold-left'>值班人员：</label><label class='title-label'>" + tempRecord[0]["member"] + "</label>");
+                    $(".record-title").append("<label class='title-label-bold'>日期：</label><label class='title-label'>" + _duty_date  + "</label><label class='title-label-bold-left'>值班人员：</label><label class='title-label'>" + tempRecord[0]["member"] + "</label>");
+                    // $(".record-title").append("<label class='title-label-bold'>日期：</label><label class='title-label'>" + _duty_date + "</label><label class='title-label-bold-left'>局领导：</label><label class='title-label'>" + tempRecord[0]["leaderComm"] + "</label><label class='title-label-bold-left'>带班：</label><label class='title-label'>" + tempRecord[0]["leader"] + "</label><label class='title-label-bold-left'>值班人员：</label><label class='title-label'>" + tempRecord[0]["member"] + "</label>");
                 } else {
                     $(".record-title").append("<label class='title-label-bold'>日期：</label><label class='title-label'>" + _duty_date + "</label><label class='title-label-bold-left'>值班人员：</label><label class='title-label'>无</label>");
                 }
@@ -191,16 +192,16 @@ $(function () {
                     //管理员或者当天的值班人员可操作
                     if (_duty_role == "1" || (_duty_time_today == _duty_date && tempRecord.length > 0 && tempRecord[0]["member"].indexOf(_duty_name) > -1) || isLastDutyUser) {
                         setDutyEnabled("fxkh", false);
-                        setDutyEnabled("gqzq", false);
-                        setDutyEnabled("fxkhxd", false);
-                        setDutyEnabled("consult", false);
+                        // setDutyEnabled("gqzq", false);
+                        // setDutyEnabled("fxkhxd", false);
+                        // setDutyEnabled("consult", false);
                         $(".btnWaterInfo,.btnWaterMain,.btnWaterMainHd,.btnRainInfo,.btnRainMain").attr("disabled", false);
                         duty_fxkh_editable = true;
                     } else {
                         setDutyEnabled("fxkh", true);
-                        setDutyEnabled("gqzq", true);
-                        setDutyEnabled("fxkhxd", true);
-                        setDutyEnabled("consult", true);
+                        // setDutyEnabled("gqzq", true);
+                        // setDutyEnabled("fxkhxd", true);
+                        // setDutyEnabled("consult", true);
                         $(".btnWaterInfo,.btnWaterMain,.btnWaterMainHd,.btnRainInfo,.btnRainMain").attr("disabled", true);
                         duty_fxkh_editable = false;
                     }
