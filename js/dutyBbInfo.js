@@ -1,6 +1,6 @@
 $(function (){ 
-    // var token = $.session.get("sessionId");
-    var token = $.cookie('sessionId');
+    var token = $.session.get("sessionId");
+    // var token = $.cookie('sessionId');
     var date = $.session.get("searchDate");
     getDutyBbInfo(date,token);
     $('#labDate').text(date);

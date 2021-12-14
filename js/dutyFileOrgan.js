@@ -1,7 +1,7 @@
 $(function () {
     //token
-    // var token = $.session.get("sessionId");
-    var token = $.cookie('sessionId');
+    var token = $.session.get("sessionId");
+    // var token = $.cookie('sessionId');
     //修改网页标题
     $("title").html(_system_name + $("title").html());
 

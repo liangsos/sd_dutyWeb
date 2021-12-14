@@ -8,7 +8,7 @@ function btnLogin_Click(){
         dataType: "json",
         // traditional: true,
         contentType: "application/x-www-form-urlencoded; charset=utf-8",
-        xhrFields:{withCredentials: true},
+        // xhrFields:{withCredentials: true},
         success: function (_res) {
             var data = _res;
             if(_res.success){

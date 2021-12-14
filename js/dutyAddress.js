@@ -1,7 +1,7 @@
 $(function () {
     //token
-    // var token = $.session.get("sessionId");
-    var token = $.cookie('sessionId');
+    var token = $.session.get("sessionId");
+    // var token = $.cookie('sessionId');
     //当前登陆名
     var _duty_user_name = $.session.get("userName");
 

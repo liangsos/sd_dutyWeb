@@ -583,6 +583,14 @@ $(function () {
         //校验时间
         var beginTime = $("#txtBegin").val();
         var endTime = $("#txtEnd").val();
+        var bTime = new Date(beginTime);
+        var eTime = new Date(endTime);
+        if(bTime.getTime() > eTime.getTime()){
+            layer.msg('开始时间不能大于结束时间！', {
+                icon: 5
+            });
+            return;
+        }
 
         $(".duty_loading").show();
 

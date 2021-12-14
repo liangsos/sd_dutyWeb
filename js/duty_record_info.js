@@ -809,14 +809,14 @@ $(function () {
                 $.each(tempTel, function (index, obj) {
                     _tel += "<tr><td>" + (obj["type"] == "0" ? "来电" : "去电") + "</td><td>" + $.trim(obj["telephone"]) + "</td><td>" + $.trim(obj["units"]) + "</td>";
                     _tel += "<td title='" + $.trim(obj["content"]) + "'>" + $.trim(obj["content"]) + "</td>";
-                    if (duty_record_tel_editable) {
+                    // if (duty_record_tel_editable) {
                         _tel += "<td><button class='btn btn-default btnEditTel' type='button' _id='" + obj["id"] + "'>编辑</button>";
                         _tel += "<button class='btn btn-default btnDelTel' type='button' _id='" + obj["id"] + "'>删除</button>";
-                    } else {
-                        _tel += "<td><button class='btn btn-default btnWatch' type='button' _id='" + obj["id"] + "'>详细</button>";
-                    }
+                    // } else {
+                        // _tel += "<button class='btn btn-default btnWatch' type='button' _id='" + obj["id"] + "'>详细</button>";
+                    // }
                     _tel += "<button class='btn btn-default btnPlayTel' type='button' _audio='" + obj["audio"] + "' " + (obj["audio"] == "" ? "disabled='true'" : "") + ">播放</button>";
-                    _tel += "<audio id='" + obj["id"] + "' controls='controls' hidden='false' src='" + obj["audio"] + "' >播放</audio></td></tr>";
+                    _tel += "<audio id='" + obj["id"] + "' controls='controls' hidden='false' src='" + obj["audio"] + "' >播放</audio></tr>";
                 });
                 $("#tableRecordTel").append(_tel);
             }
@@ -853,8 +853,8 @@ $(function () {
      * 来电记录删除按钮
      **/
     $("#tableRecordTel").delegate(".btnDelTel", "click", function () {
-        if (!duty_record_tel_editable)
-            return;
+        // if (!duty_record_tel_editable)
+        //     return;
 
         _duty_tel_id_del = $(this).attr("_id");
         _del_type = "tel";
@@ -896,8 +896,8 @@ $(function () {
      **/
     $("#tableRecordTel").delegate(".btnPlayTel", "click", function () {
         console.log("点击播放暂停")
-        if (!duty_record_tel_editable)
-            return;
+        // if (!duty_record_tel_editable)
+        //     return;
         // var audio = $("this").next();
         var a = $("this")
 
@@ -1502,7 +1502,8 @@ Date.prototype.Format = function (fmt) {
 }
 
 function addDate(date,days){ 
-    var d=new Date(date); 
+    var day = date.replace("-", "/").replace("-", "/");
+    var d=new Date(day); 
     d.setDate(d.getDate()+days); 
     var m=d.getMonth()+1; 
     return d.getFullYear()+'-'+m+'-'+d.getDate() + " 08:00:00"; 

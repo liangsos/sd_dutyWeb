@@ -11,7 +11,7 @@ $(function () {
             if(res.success){
                 var dutyTody = res.data;
                 // var li = '<li>局领导：' + dutyTody.leaderComm + '&nbsp;&nbsp;&nbsp;' + '带班：' + dutyTody.leader + '&nbsp;&nbsp;&nbsp;' + '值班人员：' + dutyTody.member  + '</li>';
-                var li = '<li>主班：' + dutyTody.member.split(',')[0] + '&nbsp;&nbsp;&nbsp;' + '副班：' + dutyTody.member.split(',')[1] + '</li>';
+                var li = '<li>主班：' + dutyTody.member.split(',')[0] + '&nbsp;&nbsp;&nbsp;' + '副班：' + dutyTody.member[1] + '</li>';
                 $("#dutyToday").append(li);
                 
             }else{
@@ -38,19 +38,38 @@ $(function () {
         "name":"isHome",
         "value":"1"
     }];
+    // var aoData = [
+    //     {
+    //         "name": "sEcho",
+    //         "value": "1"
+    //     },
+    //     {
+    //         "name": "iDisplayStart",
+    //         "value": "0"
+    //     },
+    //     {
+    //         "name": "iDisplayLength",
+    //         "value": "1000"
+    //     },
+    //     {
+    //         "name": "search_begin_time",
+    //         "value": "2021-11-01"
+    //     },
+    //     {
+    //         "name": "search_end_time",
+    //         "value": "2021-11-30"
+    //     }
+    // ]
       
     $.ajax({
-        headers:{
-            "Authorization" : "40ff4bf5-9acd-4d61-b6aa-a216be79b1d5"
-        },
         type: "POST",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        url: baseUrl + "file/GetDutyDoc",
+        url:baseUrl + "file/GetDutyDoc",
+        // url:baseUrl + "phone/getDutyBb",
+        // url: "http://10.37.1.155:9003/sd-duty/api/file/GetDutyDoc",
+        // url:"http://60.216.119.102:10086/sd-duty/api/phone/getDutyBb",
         data:JSON.stringify(aoData),
-        // crossDomain:true,
-        // async:false,
-        // xhrFields: { withCredentials: true },
         success: function (res) {
             if(res.success){
                 // var data = res;

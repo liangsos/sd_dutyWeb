@@ -9,7 +9,8 @@ var addvcd = $.session.get("addvcd");
 var extNodes = new Array({ text: "值班记录", leaf: true, icon: "images/icon/record.png", qtip: "page/DutyRecord.html", qtitle: '值班记录' },
                  { text: "文件管理", leaf: true, icon: "images/icon/file.png", qtip: "page/DutyFile.html", qtitle: '文件管理' },
                  { text: "值班查询", leaf: true, icon: "images/icon/search.png", qtip: "page/DutyBb.html", qtitle: '值班查询' },
-                 { text: "排班管理", leaf: true, icon: "images/icon/plan.png", qtip: "page/DutyRecordUser.html", qtitle: '排班管理' }
+                 { text: "排班管理", leaf: true, icon: "images/icon/plan.png", qtip: "page/DutyRecordUser.html", qtitle: '排班管理' },
+                 { text: "水情通讯录", leaf: true, icon: "images/icon/communication.png", qtip: "page/CommunicationNew.html", qtitle: '水情通讯录' }
                 //  { text: "邮件管理", leaf: true, icon: "images/icon/import.png", qtip: "page/DutyEmail.html", qtitle: '邮件管理' }
                  );
 //省级用户能看到邮件管理
@@ -29,7 +30,7 @@ if (_duty_role == "1")
             // { text: "来文单位", leaf: true, qtip: "page/DutyFileOrgan.html", qtitle: '来文单位' },
             { text: "法定假管理", leaf: true, qtip: "page/DutyHoliday.html", qtitle: '法定假管理' },
             { text: "值班IP管理", leaf: true, qtip: "page/DutyAddress.html", qtitle: '值班IP管理' },
-            { text: "水情通讯录", leaf: true, qtip: "page/Communication.html", qtitle: '水情通讯录' }
+            // { text: "水情通讯录", leaf: true, qtip: "page/Communication.html", qtitle: '水情通讯录' }
           ]
     });
 }
@@ -233,7 +234,7 @@ $(function () {
             dataType: "json",
             url: changePasswordUrl,
             data:{"newPwd":pass1,"confirmPwd":pass2},
-            xhrFields:{withCredentials: true},
+            // xhrFields:{withCredentials: true},
             success: function (res) {
                 var data = res;
                 if(res.success){
@@ -251,7 +252,7 @@ $(function () {
                         // contentType: "application/x-www-form-urlencoded; charset=utf-8",
                         dataType: "json",
                         url: systemLogoutUrl,
-                        xhrFields:{withCredentials: true},
+                        // xhrFields:{withCredentials: true},
                         success: function (res) {
                             var data = res;
                             if(res.success){

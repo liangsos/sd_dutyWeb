@@ -56,9 +56,11 @@ $(function () {
             "mDataProp": "role"
         }, {
             "mDataProp": "userType"
-        }, {
-            "mDataProp": "sort"
-        }, {
+        }, 
+        // {
+        //     "mDataProp": "sort"
+        // }, 
+        {
             "mDataProp": "",
             "sDefaultContent": "Edit"
         }
@@ -86,7 +88,7 @@ $(function () {
             var txtHtml = "<button class='btn btn-default btn_edit' type='button'><span class='fa fa-edit'></span></span>&nbsp;&nbsp;编辑</button>&nbsp;&nbsp;";
             txtHtml += "<button class='btn btn-default btn_del' type='button'><span class='fa fa-trash-o'></span>&nbsp;&nbsp;删除</button>&nbsp;&nbsp;";
             txtHtml += "<button class='btn btn-default btn_load' type='button'><span class='fa fa-paw'></span>&nbsp;&nbsp;密码初始化</button>";
-            $('td:eq(6)', nRow).html(txtHtml);
+            $('td:eq(5)', nRow).html(txtHtml);
 
             return nRow;
         },

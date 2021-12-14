@@ -1,7 +1,7 @@
 $(function () {
     //token
-    // var token = sessionStorage.getItem("sessionId");
-    var token = $.cookie('sessionId');
+    var token = sessionStorage.getItem("sessionId");
+    // var token = $.cookie('sessionId');
     //登陆人员
     var _duty_user_name = sessionStorage.getItem("userName");
     var _duty_name = sessionStorage.getItem("realName");
@@ -222,7 +222,7 @@ function downloadFile(url){
     iframe.src = url; 
     document.body.appendChild(iframe); // 这一行必须，iframe挂在到dom树上才会发请求
     // 5分钟之后删除
-    setTimeout(()=>{
+    setTimeout(function(){
         iframe.remove();
     }, 5 * 60 * 1000);
 }
