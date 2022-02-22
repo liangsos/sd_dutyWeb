@@ -11,7 +11,7 @@ $(function () {
             if(res.success){
                 var dutyTody = res.data;
                 // var li = '<li>局领导：' + dutyTody.leaderComm + '&nbsp;&nbsp;&nbsp;' + '带班：' + dutyTody.leader + '&nbsp;&nbsp;&nbsp;' + '值班人员：' + dutyTody.member  + '</li>';
-                var li = '<li>主班：' + dutyTody.member.split(',')[0] + '&nbsp;&nbsp;&nbsp;' + '副班：' + dutyTody.member[1] + '</li>';
+                var li = '<li>主班：' + dutyTody.member.split(',')[0] + '&nbsp;&nbsp;&nbsp;' + '副班：' + dutyTody.member.split(',')[1] + '</li>';
                 $("#dutyToday").append(li);
                 
             }else{

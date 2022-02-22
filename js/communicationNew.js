@@ -20,8 +20,11 @@ var table;
             if (res.success) {
                 addvcdStcd = res.data;
                 var cityArr;
-                for (i = 0; i < addvcdStcd.length; i++) {
-                    if (addvcdStcd[i].city == null) {
+                for (i = 0; i <= addvcdStcd.length; i++) {
+					if(i == addvcdStcd.length){
+						dataTree.push(cityArr);
+					}else{
+						if (addvcdStcd[i].city == null) {
                         if (cityArr != undefined) {
                             dataTree.push(cityArr);
                         }
@@ -35,15 +38,17 @@ var table;
                         cityArr.id = addvcdStcd[i].addvcd;
                         if(userAddvcd.indexOf(addvcdStcd[i].addvcd) > -1){
                             cityArr.spread = true;
-                        }
-                    } else {
-                        if (addvcdStcd[i].city == cityArr.id) {
-                            cityArr.children.push({
-                                title: addvcdStcd[i].addvnm.split("市")[1],
-                                id: addvcdStcd[i].addvcd,
+							}
+						} else {
+							if (addvcdStcd[i].city == cityArr.id) {
+								cityArr.children.push({
+									title: addvcdStcd[i].addvnm.split("市")[1],
+									id: addvcdStcd[i].addvcd,
                             })
-                        }
-                    }
+							}
+						}
+					}
+                    
                 }
                 dataTree.unshift({
                     title: "山东省",
@@ -111,7 +116,7 @@ layui.use('table', function () {
         cols: [[//表头
             { type: 'numbers',title:'编号' },
             { field: 'name', title: '姓名' },
-            { field: 'unit', title: '部门' },
+            //{ field: 'unit', title: '部门' },
             { field: 'position', title: '职务' },
             { field: 'tel', title: '电话' },
             { field: 'phone', title: '手机' },
@@ -133,6 +138,7 @@ layui.use('table', function () {
         var checkStatus = table.checkStatus(obj.config.id);
         switch (obj.event) {
             case 'add': //新增
+				id = "";
                 form.val("communicationForm",{
                     "name":'',
                     "unit":'',
@@ -203,7 +209,7 @@ layui.use('form', function () {
             tel: formData.tel,
             phone: formData.phone,
             id: id,
-            addvcd:addvcdAdmin
+            addvcd:userAddvcd
         };
         var params_info = JSON.stringify(objData);
         $.ajax({
@@ -223,7 +229,7 @@ layui.use('form', function () {
                     //执行重载
                     table.reload('comTable', {
                         where: {
-                            addvcd: addvcdAdmin
+                            addvcd: userAddvcd
                         }
                     });
                 }

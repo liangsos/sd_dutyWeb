@@ -40,8 +40,8 @@ $(function (){
                 $('#emailTable').hide();
                 $('#matTable').hide();
                 $('#annoTable').hide();
-                $('.zy_title h2').html("防汛文档");
-                $('#locationNow').html("防汛文档");
+                $('.zy_title h2').html("水情文档");
+                $('#locationNow').html("水情文档");
                 $('#docFix').addClass("cur");
                 $('#homeFix').removeClass("cur");
                 $('#emailFix').removeClass("cur");
