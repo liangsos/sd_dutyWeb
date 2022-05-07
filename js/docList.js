@@ -13,7 +13,16 @@ $(function (){
     initDatePicker('.form_date', "yyyy-mm-dd", 2);
     initDatePicker('.date-hour', "yyyy-mm-dd hh:00:00", 1);
 
-    initTable(backId);
+    if (backId != "5") {
+        $("#comList").hide();
+        initTable(backId);
+    } else {
+        //水情通讯录
+        $('.zy_title h2').html("通讯录");
+        $('#locationNow').html("通讯录");
+        $("#comList").show();
+        $("#doc").hide()
+    }
 
     /**
      * 查询按钮事件
